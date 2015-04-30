@@ -19,12 +19,19 @@ public class HeaderPagerAdapter extends PagerAdapter {
   //界面列表
   private ArrayList<WeekView> views;
 
+  private int mSelectDay;
+
   public HeaderPagerAdapter (Context context){
     views = new ArrayList<>();
     for (int i = 0; i < 3; i ++) {
       WeekView weekView = new WeekView(context);
       views.add(weekView);
     }
+  }
+
+  public void setSelectDay(int day) {
+    mSelectDay = day;
+    notifyDataSetChanged();
   }
 
   @Override public void destroyItem(ViewGroup container, int position, Object object) {
@@ -47,6 +54,8 @@ public class HeaderPagerAdapter extends PagerAdapter {
   }
 
   @Override public Object instantiateItem(ViewGroup container, int position) {
+    views.get(position).setSelectDay(mSelectDay);
+    views.get(position).invalidate();
     container.addView(views.get(position));
     return views.get(position);
   }
@@ -71,6 +80,9 @@ public class HeaderPagerAdapter extends PagerAdapter {
 
   @Override public void startUpdate(ViewGroup container) {
     super.startUpdate(container);
-
+    for (int i = 0; i < container.getChildCount(); i++) {
+      ((WeekView)container.getChildAt(i)).setSelectDay(mSelectDay);
+      ((WeekView)container.getChildAt(i)).invalidate();
+    }
   }
 }

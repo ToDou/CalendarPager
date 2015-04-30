@@ -27,6 +27,7 @@ public class HeaderViewPager extends ViewPager {
 
   public void onContentPageSelected(int position) {
     Log.e(TAG, "position: " + position );
+
     setCurrentItem(position / 7);
   }
 

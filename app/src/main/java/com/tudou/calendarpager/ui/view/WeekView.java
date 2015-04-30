@@ -13,6 +13,8 @@ import com.tudou.calendarpager.R;
 public class WeekView extends View {
 
   private Paint mPaintNormal;
+  private Paint mPaintSelect;
+  private int mSelectDay;
 
   public WeekView(Context context) {
     this(context, null);
@@ -31,10 +33,12 @@ public class WeekView extends View {
     mPaintNormal = new Paint(Paint.ANTI_ALIAS_FLAG);
     mPaintNormal.setColor(getResources().getColor(android.R.color.darker_gray));
     mPaintNormal.setTextSize(26f);
+
+    mPaintSelect = new Paint(Paint.ANTI_ALIAS_FLAG);
+    mPaintSelect.setColor(getResources().getColor(android.R.color.holo_blue_dark));
   }
 
   protected void onDraw(Canvas canvas) {
-
     for (int i = 1; i < 8; i++) {
       String content = i + "";
       Paint.FontMetrics fontMetrics = mPaintNormal.getFontMetrics();
@@ -43,8 +47,17 @@ public class WeekView extends View {
       //计算文字baseline
       float textWidth = mPaintNormal.measureText(content);
       float parentWidth = getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
+
+      if (mSelectDay + 1 == i) {
+        canvas.drawCircle(getResources().getDimension(R.dimen.activity_horizontal_margin) +  parentWidth / 7 * (i - 1) + parentWidth / 7 / 2, getHeight() / 2, getHeight() / 2 - 10, mPaintSelect);
+      }
       float textBaseY = getHeight() - (getHeight() - fontHeight) / 2 - fontMetrics.bottom;
       canvas.drawText(content, getResources().getDimension(R.dimen.activity_horizontal_margin) +  parentWidth / 7 * (i - 1) + parentWidth / 7 / 2 - textWidth / 2, textBaseY, mPaintNormal);
+
     }
+  }
+
+  public void setSelectDay(int selectDay) {
+    mSelectDay = selectDay;
   }
 }
