@@ -25,6 +25,6 @@ public class SimpleFragment extends Fragment {
       @Nullable Bundle savedInstanceState) {
     TextView textView = new TextView(getActivity());
     textView.setText(mStrings);
-    return super.onCreateView(inflater, container, savedInstanceState);
+    return textView;
   }
 }

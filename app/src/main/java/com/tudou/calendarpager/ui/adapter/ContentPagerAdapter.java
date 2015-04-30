@@ -28,11 +28,7 @@ public class ContentPagerAdapter extends FragmentPagerAdapter {
 
 
       default:
-        return null;
+        return "";
     }
-  }
-
-  @Override public long getItemId(int position) {
-    return super.getItemId(position);
   }
 }
