@@ -22,14 +22,12 @@ public class HeaderViewPager extends ViewPager {
   public void onContentPageScrolled(int position, float positionOffset,
       int positionOffsetPixels) {
     Log.e(TAG, "position: " + position + "      positionOffset: " + positionOffset + "     positionOffsetPicxels: " + positionOffsetPixels);
-    if (position % 6 == 0) {
-      //this.onPageScrolled(position / 6, positionOffset, positionOffsetPixels);
-
-    }
+    //setCurrentItem((position - 1) / 6);
   }
 
   public void onContentPageSelected(int position) {
-
+    Log.e(TAG, "position: " + position );
+    setCurrentItem(position / 7);
   }
 
   public void onContentPageScrollStateChanged(int state) {

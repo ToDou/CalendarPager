@@ -16,7 +16,7 @@ public class ContentPagerAdapter extends FragmentPagerAdapter {
   }
 
   @Override public Fragment getItem(int position) {
-    return SimpleFragment.newInstance("This is the page: " + position);
+    return SimpleFragment.newInstance("This is the page: " + (position + 1));
   }
 
   @Override public int getCount() {

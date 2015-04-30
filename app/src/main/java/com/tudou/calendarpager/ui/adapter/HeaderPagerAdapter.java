@@ -10,20 +10,20 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.tudou.calendarpager.ui.view.WeekView;
 import java.util.ArrayList;
 
 public class HeaderPagerAdapter extends PagerAdapter {
 
 
   //界面列表
-  private ArrayList<View> views;
+  private ArrayList<WeekView> views;
 
   public HeaderPagerAdapter (Context context){
     views = new ArrayList<>();
     for (int i = 0; i < 3; i ++) {
-      TextView textView = new TextView(context);
-      textView.setText("This is the header: " + i);
-      views.add(textView);
+      WeekView weekView = new WeekView(context);
+      views.add(weekView);
     }
   }
 
