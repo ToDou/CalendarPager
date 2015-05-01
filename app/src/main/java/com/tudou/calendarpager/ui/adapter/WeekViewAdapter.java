@@ -14,17 +14,17 @@ import com.tudou.calendarpager.util.DayUtils;
 /**
  * Created by tudou on 15-4-30.
  */
-public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekViewHolder> {
+public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekViewHolder> implements
+    WeekView.OnDayClickListener {
 
-  private LayoutInflater mInflater;
   private Context mContext;
   private CalendarDay mStartDay;
   private CalendarDay mEndDay;
   private CalendarDay mFirstShowDay;
   private WeekDayViewPager mWeekDayViewPager;
+  private int mSelectPosition;
 
   public WeekViewAdapter(Context context, CalendarDay startDay, CalendarDay endDay, WeekDayViewPager viewPager) {
-    mInflater = LayoutInflater.from(context);
     mContext = context;
     mStartDay = startDay;
     mEndDay = endDay;
@@ -47,13 +47,19 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekVi
     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
         ViewGroup.LayoutParams.MATCH_PARENT);
     weekView.setLayoutParams(params);
-    WeekViewHolder viewHolder = new WeekViewHolder(weekView, mFirstShowDay, mWeekDayViewPager);
+    WeekViewHolder viewHolder = new WeekViewHolder(weekView, mFirstShowDay, mWeekDayViewPager, this);
     return viewHolder;
   }
 
   @Override
   public void onBindViewHolder(final WeekViewHolder viewHolder, final int position) {
-    viewHolder.bind(position);
+    viewHolder.bind(position, mSelectPosition);
+  }
+
+  @Override public void onDayClick(WeekView simpleMonthView, CalendarDay calendarDay,
+      int position) {
+    mSelectPosition = position;
+    notifyDataSetChanged();
   }
 
   public static class WeekViewHolder extends RecyclerView.ViewHolder {
@@ -61,15 +67,17 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekVi
     private WeekView mWeekView;
 
 
-    public WeekViewHolder(View view,CalendarDay firstShowDay, WeekDayViewPager viewPager) {
+    public WeekViewHolder(View view,CalendarDay firstShowDay, WeekDayViewPager viewPager, WeekViewAdapter weekViewAdapter) {
       super(view);
       mWeekView = (WeekView)view;
       mWeekView.setDays(firstShowDay);
       mWeekView.setOnDayClickListener(viewPager);
+      mWeekView.setOnAdapterDayClickListener(weekViewAdapter);
     }
 
-    public void bind(int position) {
+    public void bind(int position, int selectPostion) {
       mWeekView.setPosition(position);
+      mWeekView.setSelectPostion(selectPostion);
     }
 
   }

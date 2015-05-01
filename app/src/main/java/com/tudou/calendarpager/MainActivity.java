@@ -52,7 +52,6 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
       @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
         adjustPosition(recyclerView, newState);
-
       }
 
       @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

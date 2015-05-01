@@ -5,11 +5,6 @@
   android:orientation="vertical"
   tools:context=".MainActivity">
 
-  <!--<com.tudou.calendarpager.ui.view.HeaderViewPager
-      android:id="@+id/view_pager_header"
-      android:layout_width="match_parent"
-      android:layout_height="48dp"/>-->
-
   <android.support.v7.widget.RecyclerView
       android:id="@+id/header_recycler_view"
       android:layout_width="match_parent"

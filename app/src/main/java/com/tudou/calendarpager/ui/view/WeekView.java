@@ -3,6 +3,7 @@ package com.tudou.calendarpager.ui.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -18,18 +19,18 @@ import java.util.Calendar;
 public class WeekView extends View {
   private final static String TAG = "WeekView";
   private final static int DAY_IN_WEEK = 7;
+  private final static float LAST_OFFSET_IN_WEEK = 0.8f;
 
   private CalendarDay mFirstShowDay;
   private int mWeekPostion;
   private int mDaysPosition;
 
   private OnDayClickListener mOnDayClickListener;
+  private OnDayClickListener mOnAdapterDayClickListener;
 
   private Paint mPaintNormal;
   private int mTextNormalColor;
   private int mTextSelectColor;
-
-  private int mSelectDay;
 
   private float acceleration = 0.5f;
   private float headMoveOffset = 0.6f;
@@ -37,6 +38,8 @@ public class WeekView extends View {
   private float radiusMax;
   private float radiusMin;
   private float radiusOffset;
+
+  private boolean mLastPostionFinishing;
 
   private int indicatorColorId;
   private int indicatorColorsId;
@@ -68,7 +71,7 @@ public class WeekView extends View {
     radiusMax = getResources().getDimension(R.dimen.si_default_radius_max);
     radiusMin = getResources().getDimension(R.dimen.si_default_radius_min);
 
-    indicatorColorId = R.color.si_default_indicator_bg;
+    indicatorColorId = android.R.color.holo_blue_bright;
 
     radiusOffset = radiusMax - radiusMin;
   }
@@ -108,6 +111,10 @@ public class WeekView extends View {
         mPaintNormal.setColor(mTextNormalColor);
       }
 
+      if (mLastPostionFinishing) {
+        mPaintNormal.setColor(mTextNormalColor);
+      }
+
       canvas.drawText(content, getResources().getDimension(R.dimen.activity_horizontal_margin)
           + parentWidth / DAY_IN_WEEK * i
           + parentWidth / DAY_IN_WEEK / 2 - textWidth / 2, textBaseY, mPaintNormal);
@@ -117,6 +124,12 @@ public class WeekView extends View {
 
   private void drawSpringView(Canvas canvas) {
     if (mWeekPostion  != mDaysPosition / DAY_IN_WEEK) return;
+    if (mLastPostionFinishing) {
+      mSpringView.paint.setAlpha(0);
+    } else {
+      mSpringView.paint.setAlpha(255);
+    }
+
     mSpringView.getHeadPoint().setY(getHeight() / 2);
     mSpringView.getFootPoint().setY(getHeight() / 2);
     mSpringView.makePath();
@@ -157,13 +170,13 @@ public class WeekView extends View {
         float positionOffsetTemp = positionOffset / headMoveOffset;
         headX = (float) ((Math.atan(positionOffsetTemp*acceleration*2 - acceleration ) + (Math.atan(acceleration))) / (2 * (Math.atan(acceleration))));
       }
-      mSpringView.getHeadPoint().setX(getDayX(position) - headX * getPositionDistance(position));
+      mSpringView.getHeadPoint().setX(getDayX(position) - headX * getPositionDistance());
       float footX = 0f;
       if (positionOffset > footMoveOffset){
         float positionOffsetTemp = (positionOffset- footMoveOffset) / (1- footMoveOffset);
         footX = (float) ((Math.atan(positionOffsetTemp*acceleration*2 - acceleration ) + (Math.atan(acceleration))) / (2 * (Math.atan(acceleration))));
       }
-      mSpringView.getFootPoint().setX(getDayX(position) - footX * getPositionDistance(position));
+      mSpringView.getFootPoint().setX(getDayX(position) - footX * getPositionDistance());
 
       // reset radius
       if(positionOffset == 0){
@@ -177,16 +190,18 @@ public class WeekView extends View {
       mSpringView.getFootPoint().setRadius(radiusMax);
     }
 
-    if (position % DAY_IN_WEEK == 6 && positionOffset > 0.8) {
+    if (position % DAY_IN_WEEK == 6 && positionOffset > LAST_OFFSET_IN_WEEK) {
+      mLastPostionFinishing = true;
       mSpringView.paint.setAlpha(0);
     } else {
+      mLastPostionFinishing = false;
       mSpringView.paint.setAlpha(255);
     }
 
     invalidate();
   }
 
-  private float getPositionDistance(int position) {
+  private float getPositionDistance() {
     float parentWidth = getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
     return -parentWidth / DAY_IN_WEEK;
   }
@@ -194,10 +209,6 @@ public class WeekView extends View {
   private float getDayX(int position) {
     float parentWidth = getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
     return getResources().getDimension(R.dimen.activity_horizontal_margin) +  parentWidth / DAY_IN_WEEK * (position % DAY_IN_WEEK) + parentWidth / DAY_IN_WEEK / 2;
-  }
-
-  public void setSelectDay(int selectDay) {
-    mSelectDay = selectDay;
   }
 
   private void initSpringView() {
@@ -260,6 +271,7 @@ public class WeekView extends View {
   private void onDayClick(CalendarDay calendarDay, int position) {
     if (mOnDayClickListener != null) {
       mOnDayClickListener.onDayClick(this, calendarDay, position);
+      mOnAdapterDayClickListener.onDayClick(this, calendarDay, position);
     }
   }
 
@@ -267,7 +279,17 @@ public class WeekView extends View {
     mOnDayClickListener = onDayClickListener;
   }
 
+  public void setOnAdapterDayClickListener(OnDayClickListener onDayClickListener) {
+    mOnAdapterDayClickListener = onDayClickListener;
+  }
+
+  public void setSelectPostion(int selectPostion) {
+    mDaysPosition = selectPostion;
+    invalidate();
+  }
+
   public static abstract interface OnDayClickListener {
     public abstract void onDayClick(WeekView simpleMonthView, CalendarDay calendarDay, int position);
   }
+
 }
