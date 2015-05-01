@@ -26,7 +26,9 @@ public class WeekView extends View {
   private OnDayClickListener mOnDayClickListener;
 
   private Paint mPaintNormal;
-  private Paint mPaintSelect;
+  private int mTextNormalColor;
+  private int mTextSelectColor;
+
   private int mSelectDay;
 
   private float acceleration = 0.5f;
@@ -73,13 +75,11 @@ public class WeekView extends View {
 
 
   private void initPaint() {
+    mTextSelectColor = getResources().getColor(android.R.color.white);
+    mTextNormalColor = getResources().getColor(android.R.color.darker_gray);
     mPaintNormal = new Paint(Paint.ANTI_ALIAS_FLAG);
-    mPaintNormal.setColor(getResources().getColor(android.R.color.darker_gray));
+    mPaintNormal.setColor(mTextNormalColor);
     mPaintNormal.setTextSize(26f);
-
-    mPaintSelect = new Paint(Paint.ANTI_ALIAS_FLAG);
-    mPaintSelect.setColor(getResources().getColor(android.R.color.holo_blue_dark));
-
 
     initSpringView();
   }
@@ -96,20 +96,27 @@ public class WeekView extends View {
     for (int i = 0; i < DAY_IN_WEEK; i++) {
       String content = String.valueOf(mWeekCalendarDays.get(i).day);
       Paint.FontMetrics fontMetrics = mPaintNormal.getFontMetrics();
-      //计算文字高度
       float fontHeight = fontMetrics.bottom - fontMetrics.top;
-      //计算文字baseline
       float textWidth = mPaintNormal.measureText(content);
       float parentWidth = getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
 
       float textBaseY = getHeight() - (getHeight() - fontHeight) / 2 - fontMetrics.bottom;
-      canvas.drawText(content, getResources().getDimension(R.dimen.activity_horizontal_margin) +  parentWidth / 7 * i + parentWidth / 7 / 2 - textWidth / 2, textBaseY, mPaintNormal);
+
+      if (mDaysPosition % DAY_IN_WEEK == i && mDaysPosition / DAY_IN_WEEK == mWeekPostion) {
+        mPaintNormal.setColor(mTextSelectColor);
+      } else {
+        mPaintNormal.setColor(mTextNormalColor);
+      }
+
+      canvas.drawText(content, getResources().getDimension(R.dimen.activity_horizontal_margin)
+          + parentWidth / DAY_IN_WEEK * i
+          + parentWidth / DAY_IN_WEEK / 2 - textWidth / 2, textBaseY, mPaintNormal);
 
     }
   }
 
   private void drawSpringView(Canvas canvas) {
-    if (mWeekPostion  != mDaysPosition / 7) return;
+    if (mWeekPostion  != mDaysPosition / DAY_IN_WEEK) return;
     mSpringView.getHeadPoint().setY(getHeight() / 2);
     mSpringView.getFootPoint().setY(getHeight() / 2);
     mSpringView.makePath();
@@ -129,7 +136,7 @@ public class WeekView extends View {
         + "     positionOffsetPicxels: "
         + positionOffsetPixels);
 
-    if (position % 7 < 7) {
+    if (position % DAY_IN_WEEK < DAY_IN_WEEK) {
       // radius
       float radiusOffsetHead = 0.5f;
       if(positionOffset < radiusOffsetHead){
@@ -170,7 +177,7 @@ public class WeekView extends View {
       mSpringView.getFootPoint().setRadius(radiusMax);
     }
 
-    if (position % 7 == 6 && positionOffset > 0.8) {
+    if (position % DAY_IN_WEEK == 6 && positionOffset > 0.8) {
       mSpringView.paint.setAlpha(0);
     } else {
       mSpringView.paint.setAlpha(255);
@@ -181,12 +188,12 @@ public class WeekView extends View {
 
   private float getPositionDistance(int position) {
     float parentWidth = getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
-    return -parentWidth / 7;
+    return -parentWidth / DAY_IN_WEEK;
   }
 
   private float getDayX(int position) {
     float parentWidth = getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
-    return getResources().getDimension(R.dimen.activity_horizontal_margin) +  parentWidth / 7 * (position % 7) + parentWidth / 7 / 2;
+    return getResources().getDimension(R.dimen.activity_horizontal_margin) +  parentWidth / DAY_IN_WEEK * (position % DAY_IN_WEEK) + parentWidth / DAY_IN_WEEK / 2;
   }
 
   public void setSelectDay(int selectDay) {
@@ -216,7 +223,7 @@ public class WeekView extends View {
     mWeekCalendarDays.clear();
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(mFirstShowDay.getTime());
-    calendar.roll(Calendar.DAY_OF_YEAR, mWeekPostion * 7);
+    calendar.roll(Calendar.DAY_OF_YEAR, mWeekPostion * DAY_IN_WEEK);
     for (int i = 0; i < DAY_IN_WEEK; i++) {
       mWeekCalendarDays.add(new CalendarDay(calendar));
       calendar.roll(Calendar.DAY_OF_YEAR, 1);
@@ -229,7 +236,7 @@ public class WeekView extends View {
       return 0;
     }
 
-    int day = (int) ((x - padding) / ((getWidth() - padding * 2) / 7));
+    int day = (int) ((x - padding) / ((getWidth() - padding * 2) / DAY_IN_WEEK));
 
     return day;
   }
@@ -242,7 +249,8 @@ public class WeekView extends View {
     if (event.getAction() == MotionEvent.ACTION_UP) {
       CalendarDay calendarDay = getDayFromLocation(event.getX(), event.getY());
       if (calendarDay != null) {
-        int position = mWeekPostion * DAY_IN_WEEK + getPositionFromLocation(event.getX(), event.getY());
+        int position = mWeekPostion * DAY_IN_WEEK + getPositionFromLocation(event.getX(),
+            event.getY());
         onDayClick(calendarDay, position);
       }
     }
