@@ -1,6 +1,7 @@
 package com.tudou.calendarpager.ui.adapter;
 
 import android.content.Context;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +80,7 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekVi
 
     public void bind(int position) {
       mWeekView.setPosition(position);
+
     }
 
   }

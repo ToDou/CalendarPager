@@ -9,15 +9,9 @@ import java.util.Calendar;
 public class DayUtils {
 
   public final static int WEEKS_IN_YEAR = 12;
+  public final static int DAY_IN_WEEK = 7;
 
   public static int calculateWeekCount(CalendarDay startDay, CalendarDay endDay) {
-    /*int years = endDay.year - startDay.year;
-
-    int week = years * WEEKS_IN_YEAR;
-    int startWeek = startDay.calendar.WEEK_OF_YEAR;
-    int endWeek = endDay.calendar.WEEK_OF_YEAR;
-    week -= (startWeek - endWeek);*/
-
     long x = endDay.getTime() - startDay.getTime();
     int days =(int) x / (1000 * 60 * 60 * 24) + 1;
     Calendar calendar = Calendar.getInstance();

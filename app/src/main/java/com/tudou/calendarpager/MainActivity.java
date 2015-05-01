@@ -1,34 +1,30 @@
 package com.tudou.calendarpager;
 
-import android.graphics.drawable.GradientDrawable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.tudou.calendarpager.model.CalendarDay;
 import com.tudou.calendarpager.ui.adapter.ContentPagerAdapter;
-import com.tudou.calendarpager.ui.adapter.HeaderPagerAdapter;
 import com.tudou.calendarpager.ui.adapter.WeekViewAdapter;
-import com.tudou.calendarpager.ui.view.HeaderViewPager;
+import com.tudou.calendarpager.ui.view.WeekView;
 
 public class MainActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener {
 
   private final static String TAG = "MainActivity";
+  public static int LIST_TOP_OFFSET = -1;
 
   @InjectView(R.id.view_pager) ViewPager mViewPagerContent;
-  //@InjectView(R.id.view_pager_header) HeaderViewPager mHeaderViewPager;
   @InjectView(R.id.header_recycler_view) RecyclerView mRecyclerView;
 
   private ContentPagerAdapter mPagerAdapter;
   private WeekViewAdapter mWeekViewAdapter;
-  //private HeaderPagerAdapter mHeaderAdapter;
   private static final int OFFSCREEN_PAGE_LIMIT = 1;
 
   @Override
@@ -41,57 +37,78 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
   }
 
   private void setUpPager() {
-    mPagerAdapter = new ContentPagerAdapter(getSupportFragmentManager());
+    mPagerAdapter = new ContentPagerAdapter(getSupportFragmentManager(), new CalendarDay(2015, 5, 1), new CalendarDay(2015, 5, 19));
     mViewPagerContent.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
     final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
         getResources().getDisplayMetrics());
     mViewPagerContent.setPageMargin(pageMargin);
     mViewPagerContent.setAdapter(mPagerAdapter);
-    /*mDayViewAdapter = new DayViewAdapter(this);
-    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-    mRecyclerView.setLayoutManager(linearLayoutManager);
-    mRecyclerView.setAdapter(mDayViewAdapter);*/
-
     mViewPagerContent.setOnPageChangeListener(this);
-
-    /*mHeaderAdapter = new HeaderPagerAdapter(this);
-    mHeaderViewPager.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
-    mHeaderViewPager.setPageMargin(pageMargin);
-    mHeaderViewPager.setAdapter(mHeaderAdapter);
-    mHeaderAdapter.setViewPager(mViewPagerContent);*/
 
     LinearLayoutManager manager = new LinearLayoutManager(this);
     manager.setOrientation(LinearLayoutManager.HORIZONTAL);
     mRecyclerView.setLayoutManager(manager);
     mWeekViewAdapter = new WeekViewAdapter(this, new CalendarDay(2015, 5, 1), new CalendarDay(2015, 5, 19));
     mRecyclerView.setAdapter(mWeekViewAdapter);
+    mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+        adjustPosition(recyclerView, newState);
+
+      }
+
+      @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        super.onScrolled(recyclerView, dx, dy);
+
+      }
+    });
+  }
+
+  private void adjustPosition(RecyclerView recyclerView, int newState) {
+    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+      int i = 0;
+      View child = recyclerView.getChildAt(i);
+      while (child != null && child.getRight() <= 0) {
+        child = recyclerView.getChildAt(++i);
+      }
+      if (child == null) {
+        // The view is no longer visible, just return
+        return;
+      }
+      final int left = child.getLeft();
+      final int right = child.getRight();
+      final int midpoint = recyclerView.getWidth() / 2;
+      if (left < LIST_TOP_OFFSET) {
+        if (right > midpoint) {
+          recyclerView.smoothScrollBy(left, 0);
+        } else {
+          recyclerView.smoothScrollBy(right, 0);
+        }
+      }
+    }
   }
 
   @Override public void onPageScrolled(int position, float positionOffset,
       int positionOffsetPixels) {
-   /* mHeaderViewPager.onContentPageScrolled(position, positionOffset, positionOffsetPixels);
-    mHeaderAdapter.setSelectDay(position);*/
     Log.e(TAG, "position: "
         + position
         + "      positionOffset: "
         + positionOffset
         + "     positionOffsetPicxels: "
         + positionOffsetPixels);
-
-    if ((position + 1) % 7 == 0 && (position + 1) / 7 > 0) {
-//      mRecyclerView.smoothScrollBy(position / 6 * positionOffsetPixels + positionOffsetPixels, 0);
-      //mRecyclerView.smoothScrollToPosition(position / 6 );
+    int i = 0;
+    View child = mRecyclerView.getChildAt(i);
+    while (child != null && child.getRight() <= 0) {
+      child = mRecyclerView.getChildAt(++i);
     }
+    ((WeekView) child).onViewPageScroll(position, positionOffset, positionOffsetPixels);
   }
 
   @Override public void onPageSelected(int position) {
-    mRecyclerView.scrollToPosition(position / 7);
-    //mHeaderViewPager.onContentPageSelected(position);
+    mRecyclerView.smoothScrollToPosition(position / 7);
   }
 
   @Override public void onPageScrollStateChanged(int state) {
-    //mHeaderViewPager.onContentPageScrollStateChanged(state);
-  }
 
+  }
 }

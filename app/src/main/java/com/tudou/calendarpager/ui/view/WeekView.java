@@ -92,7 +92,7 @@ public class WeekView extends View {
 
   protected void onDraw(Canvas canvas) {
 
-    //drawSpringView(canvas);
+    drawSpringView(canvas);
 
     if (mWeekCalendarDays.size() < 7) {
       super.onDraw(canvas);
@@ -130,89 +130,61 @@ public class WeekView extends View {
         mSpringView.footPoint.getRadius(), mSpringView.paint);
   }
 
-  /*private void setUpListener(){
-    mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+  public void onViewPageScroll(int position, float positionOffset, int positionOffsetPixels) {
+    Log.e(TAG, "position: "
+        + position
+        + "      positionOffset: "
+        + positionOffset
+        + "     positionOffsetPicxels: "
+        + positionOffsetPixels);
 
-      @Override
-      public void onPageSelected(int position) {
-        super.onPageSelected(position);
-        //setSelectedTextColor(position);
-        if(delegateListener != null){
-          delegateListener.onPageSelected(position);
-        }
-        if (getParent() != null) {
-          ((HeaderViewPager)getParent()).setCurrentItem(position / 7);
-
-        }
-
+    if (position < 21 - 1) {
+      // radius
+      float radiusOffsetHead = 0.5f;
+      if(positionOffset < radiusOffsetHead){
+        mSpringView.getHeadPoint().setRadius(radiusMin);
+      }else{
+        mSpringView.getHeadPoint().setRadius(((positionOffset-radiusOffsetHead)/(1-radiusOffsetHead) * radiusOffset + radiusMin));
+      }
+      float radiusOffsetFoot = 0.5f;
+      if(positionOffset < radiusOffsetFoot){
+        mSpringView.getFootPoint().setRadius((1-positionOffset/radiusOffsetFoot) * radiusOffset + radiusMin);
+      }else{
+        mSpringView.getFootPoint().setRadius(radiusMin);
       }
 
-      @Override
-      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        Log.e(TAG, "position: "
-            + position
-            + "      positionOffset: "
-            + positionOffset
-            + "     positionOffsetPicxels: "
-            + positionOffsetPixels);
-
-        if (position < 21 - 1) {
-          // radius
-          float radiusOffsetHead = 0.5f;
-          if(positionOffset < radiusOffsetHead){
-            mSpringView.getHeadPoint().setRadius(radiusMin);
-          }else{
-            mSpringView.getHeadPoint().setRadius(((positionOffset-radiusOffsetHead)/(1-radiusOffsetHead) * radiusOffset + radiusMin));
-          }
-          float radiusOffsetFoot = 0.5f;
-          if(positionOffset < radiusOffsetFoot){
-            mSpringView.getFootPoint().setRadius((1-positionOffset/radiusOffsetFoot) * radiusOffset + radiusMin);
-          }else{
-            mSpringView.getFootPoint().setRadius(radiusMin);
-          }
-
-          // x
-          float headX = 1f;
-          if (positionOffset < headMoveOffset){
-            float positionOffsetTemp = positionOffset / headMoveOffset;
-            headX = (float) ((Math.atan(positionOffsetTemp*acceleration*2 - acceleration ) + (Math.atan(acceleration))) / (2 * (Math.atan(acceleration))));
-          }
-          mSpringView.getHeadPoint().setX(getDayX(position) - headX * getPositionDistance(position));
-          float footX = 0f;
-          if (positionOffset > footMoveOffset){
-            float positionOffsetTemp = (positionOffset- footMoveOffset) / (1- footMoveOffset);
-            footX = (float) ((Math.atan(positionOffsetTemp*acceleration*2 - acceleration ) + (Math.atan(acceleration))) / (2 * (Math.atan(acceleration))));
-          }
-          mSpringView.getFootPoint().setX(getDayX(position) - footX * getPositionDistance(position));
-
-          // reset radius
-          if(positionOffset == 0){
-            mSpringView.getHeadPoint().setRadius(radiusMax);
-            mSpringView.getFootPoint().setRadius(radiusMax);
-          }
-        } else {
-          mSpringView.getHeadPoint().setX(getDayX(position));
-          mSpringView.getFootPoint().setX(getDayX(position));
-          mSpringView.getHeadPoint().setRadius(radiusMax);
-          mSpringView.getFootPoint().setRadius(radiusMax);
-        }
-
-        if(delegateListener != null){
-          delegateListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
-        }
-
-        invalidate();
+      // x
+      float headX = 1f;
+      if (positionOffset < headMoveOffset){
+        float positionOffsetTemp = positionOffset / headMoveOffset;
+        headX = (float) ((Math.atan(positionOffsetTemp*acceleration*2 - acceleration ) + (Math.atan(acceleration))) / (2 * (Math.atan(acceleration))));
       }
-
-      @Override
-      public void onPageScrollStateChanged(int state) {
-        super.onPageScrollStateChanged(state);
-        if(delegateListener != null){
-          delegateListener.onPageScrollStateChanged(state);
-        }
+      mSpringView.getHeadPoint().setX(getDayX(position) - headX * getPositionDistance(position));
+      float footX = 0f;
+      if (positionOffset > footMoveOffset){
+        float positionOffsetTemp = (positionOffset- footMoveOffset) / (1- footMoveOffset);
+        footX = (float) ((Math.atan(positionOffsetTemp*acceleration*2 - acceleration ) + (Math.atan(acceleration))) / (2 * (Math.atan(acceleration))));
       }
-    });
-  }*/
+      mSpringView.getFootPoint().setX(getDayX(position) - footX * getPositionDistance(position));
+
+      // reset radius
+      if(positionOffset == 0){
+        mSpringView.getHeadPoint().setRadius(radiusMax);
+        mSpringView.getFootPoint().setRadius(radiusMax);
+      }
+    } else {
+      mSpringView.getHeadPoint().setX(getDayX(position));
+      mSpringView.getFootPoint().setX(getDayX(position));
+      mSpringView.getHeadPoint().setRadius(radiusMax);
+      mSpringView.getFootPoint().setRadius(radiusMax);
+    }
+
+    if(delegateListener != null){
+      delegateListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
+    }
+
+    invalidate();
+  }
 
   private float getPositionDistance(int position) {
     float parentWidth = getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
@@ -227,11 +199,6 @@ public class WeekView extends View {
   public void setSelectDay(int selectDay) {
     mSelectDay = selectDay;
   }
-
-  /*public void setViewPager(ViewPager viewPager) {
-    mViewPager = viewPager;
-    setUpListener();
-  }*/
 
   private void initSpringView() {
     addPointView();

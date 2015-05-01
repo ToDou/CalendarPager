@@ -7,12 +7,20 @@ package com.tudou.calendarpager.ui.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import com.tudou.calendarpager.model.CalendarDay;
 import com.tudou.calendarpager.ui.fragment.SimpleFragment;
+import com.tudou.calendarpager.util.DayUtils;
 
 public class ContentPagerAdapter extends FragmentPagerAdapter {
 
-  public ContentPagerAdapter(FragmentManager fm) {
+  private CalendarDay mStartDay;
+  private CalendarDay mEndDay;
+
+  public ContentPagerAdapter(FragmentManager fm, CalendarDay startDay, CalendarDay endDay) {
     super(fm);
+
+    mStartDay = startDay;
+    mEndDay = endDay;
   }
 
   @Override public Fragment getItem(int position) {
@@ -20,7 +28,7 @@ public class ContentPagerAdapter extends FragmentPagerAdapter {
   }
 
   @Override public int getCount() {
-    return 21;
+    return DayUtils.calculateWeekCount(mStartDay, mEndDay) * DayUtils.DAY_IN_WEEK;
   }
 
   @Override public CharSequence getPageTitle(int position) {
