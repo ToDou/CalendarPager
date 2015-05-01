@@ -1,14 +1,20 @@
 package com.tudou.calendarpager;
 
+import android.graphics.drawable.GradientDrawable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import com.tudou.calendarpager.model.CalendarDay;
 import com.tudou.calendarpager.ui.adapter.ContentPagerAdapter;
 import com.tudou.calendarpager.ui.adapter.HeaderPagerAdapter;
+import com.tudou.calendarpager.ui.adapter.WeekViewAdapter;
 import com.tudou.calendarpager.ui.view.HeaderViewPager;
 
 public class MainActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener {
@@ -16,10 +22,12 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
   private final static String TAG = "MainActivity";
 
   @InjectView(R.id.view_pager) ViewPager mViewPagerContent;
-  @InjectView(R.id.view_pager_header) HeaderViewPager mHeaderViewPager;
+  //@InjectView(R.id.view_pager_header) HeaderViewPager mHeaderViewPager;
+  @InjectView(R.id.header_recycler_view) RecyclerView mRecyclerView;
 
   private ContentPagerAdapter mPagerAdapter;
-  private HeaderPagerAdapter mHeaderAdapter;
+  private WeekViewAdapter mWeekViewAdapter;
+  //private HeaderPagerAdapter mHeaderAdapter;
   private static final int OFFSCREEN_PAGE_LIMIT = 1;
 
   @Override
@@ -46,17 +54,24 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
 
     mViewPagerContent.setOnPageChangeListener(this);
 
-    mHeaderAdapter = new HeaderPagerAdapter(this);
+    /*mHeaderAdapter = new HeaderPagerAdapter(this);
     mHeaderViewPager.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
     mHeaderViewPager.setPageMargin(pageMargin);
     mHeaderViewPager.setAdapter(mHeaderAdapter);
-    mHeaderAdapter.setViewPager(mViewPagerContent);
+    mHeaderAdapter.setViewPager(mViewPagerContent);*/
+
+    LinearLayoutManager manager = new LinearLayoutManager(this);
+    manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+    mRecyclerView.setLayoutManager(manager);
+    mWeekViewAdapter = new WeekViewAdapter(this, new CalendarDay(2015, 5, 1), new CalendarDay(2015, 5, 19));
+    mRecyclerView.setAdapter(mWeekViewAdapter);
   }
 
   @Override public void onPageScrolled(int position, float positionOffset,
       int positionOffsetPixels) {
-    mHeaderViewPager.onContentPageScrolled(position, positionOffset, positionOffsetPixels);
-    mHeaderAdapter.setSelectDay(position);
+    mRecyclerView.smoothScrollToPosition(position / 7);
+   /* mHeaderViewPager.onContentPageScrolled(position, positionOffset, positionOffsetPixels);
+    mHeaderAdapter.setSelectDay(position);*/
    /* Log.e(TAG, "position: "
         + position
         + "      positionOffset: "
@@ -71,11 +86,11 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
   }
 
   @Override public void onPageSelected(int position) {
-    mHeaderViewPager.onContentPageSelected(position);
+    //mHeaderViewPager.onContentPageSelected(position);
   }
 
   @Override public void onPageScrollStateChanged(int state) {
-    mHeaderViewPager.onContentPageScrollStateChanged(state);
+    //mHeaderViewPager.onContentPageScrollStateChanged(state);
   }
 
 }

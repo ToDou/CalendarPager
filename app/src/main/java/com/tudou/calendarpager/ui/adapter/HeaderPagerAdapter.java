@@ -61,7 +61,7 @@ public class HeaderPagerAdapter extends PagerAdapter {
 
   @Override public Object instantiateItem(ViewGroup container, int position) {
     views.get(position).setSelectDay(mSelectDay);
-    views.get(position).setViewPager(mViewPager);
+    //views.get(position).setViewPager(mViewPager);
     views.get(position).invalidate();
     container.addView(views.get(position));
     return views.get(position);

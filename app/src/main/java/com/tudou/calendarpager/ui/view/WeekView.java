@@ -10,12 +10,21 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import com.tudou.calendarpager.R;
+import com.tudou.calendarpager.model.CalendarDay;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by tudou on 15-4-30.
  */
 public class WeekView extends View {
   private final static String TAG = "WeekView";
+  private final static int DAY_IN_WEEK = 7;
+
+  private CalendarDay mFirstShowDay;
+  private CalendarDay mStartDay;
+  private CalendarDay mEndDay;
+  private int mWeekPostion;
 
   private Paint mPaintNormal;
   private Paint mPaintSelect;
@@ -38,6 +47,8 @@ public class WeekView extends View {
   private SpringView mSpringView;
   private ObjectAnimator indicatorColorAnim;
 
+  private ArrayList<CalendarDay> mWeekCalendarDays;
+
   public WeekView(Context context) {
     this(context, null);
   }
@@ -50,6 +61,11 @@ public class WeekView extends View {
     super(context, attrs, defStyleAttr);
     initAttrs(attrs);
     initPaint();
+    initData();
+  }
+
+  private void initData() {
+    mWeekCalendarDays = new ArrayList<>(DAY_IN_WEEK);
   }
 
   private void initAttrs(AttributeSet attrs){
@@ -76,9 +92,15 @@ public class WeekView extends View {
 
   protected void onDraw(Canvas canvas) {
 
-    drawSpringView(canvas);
-    for (int i = 1; i < 8; i++) {
-      String content = i + "";
+    //drawSpringView(canvas);
+
+    if (mWeekCalendarDays.size() < 7) {
+      super.onDraw(canvas);
+      return;
+    }
+
+    for (int i = 0; i < DAY_IN_WEEK; i++) {
+      String content = String.valueOf(mWeekCalendarDays.get(i).day);
       Paint.FontMetrics fontMetrics = mPaintNormal.getFontMetrics();
       //计算文字高度
       float fontHeight = fontMetrics.bottom - fontMetrics.top;
@@ -91,7 +113,7 @@ public class WeekView extends View {
         canvas.drawCircle(getResources().getDimension(R.dimen.activity_horizontal_margin) +  parentWidth / 7 * (i - 1) + parentWidth / 7 / 2, getHeight() / 2, getHeight() / 2 - 10, mPaintSelect);
       }*/
       float textBaseY = getHeight() - (getHeight() - fontHeight) / 2 - fontMetrics.bottom;
-      canvas.drawText(content, getResources().getDimension(R.dimen.activity_horizontal_margin) +  parentWidth / 7 * (i - 1) + parentWidth / 7 / 2 - textWidth / 2, textBaseY, mPaintNormal);
+      canvas.drawText(content, getResources().getDimension(R.dimen.activity_horizontal_margin) +  parentWidth / 7 * i + parentWidth / 7 / 2 - textWidth / 2, textBaseY, mPaintNormal);
 
     }
   }
@@ -108,7 +130,7 @@ public class WeekView extends View {
         mSpringView.footPoint.getRadius(), mSpringView.paint);
   }
 
-  private void setUpListener(){
+  /*private void setUpListener(){
     mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
       @Override
@@ -190,7 +212,7 @@ public class WeekView extends View {
         }
       }
     });
-  }
+  }*/
 
   private float getPositionDistance(int position) {
     float parentWidth = getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
@@ -206,10 +228,10 @@ public class WeekView extends View {
     mSelectDay = selectDay;
   }
 
-  public void setViewPager(ViewPager viewPager) {
+  /*public void setViewPager(ViewPager viewPager) {
     mViewPager = viewPager;
     setUpListener();
-  }
+  }*/
 
   private void initSpringView() {
     addPointView();
@@ -218,5 +240,27 @@ public class WeekView extends View {
   private void addPointView() {
     mSpringView = new SpringView();
     mSpringView.setIndicatorColor(getResources().getColor(indicatorColorId));
+  }
+
+  public void setDays(CalendarDay firstShowDay, CalendarDay startDay, CalendarDay endDay) {
+    mFirstShowDay = firstShowDay;
+    mStartDay = startDay;
+    mEndDay = endDay;
+  }
+
+  public void setPosition(int position) {
+    mWeekPostion = position;
+    createWeekCalendardays();
+    invalidate();
+  }
+
+  private void createWeekCalendardays() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(mFirstShowDay.getTime());
+    calendar.roll(Calendar.DAY_OF_YEAR, mWeekPostion * 7);
+    for (int i = 0; i < DAY_IN_WEEK; i++) {
+      mWeekCalendarDays.add(new CalendarDay(calendar));
+      calendar.roll(Calendar.DAY_OF_YEAR, 1);
+    }
   }
 }
