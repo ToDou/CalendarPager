@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.tudou.calendarpager.model.CalendarDay;
 import com.tudou.calendarpager.model.CalendarWeek;
+import com.tudou.calendarpager.ui.view.WeekDayViewPager;
 import com.tudou.calendarpager.ui.view.WeekView;
 import com.tudou.calendarpager.util.DayUtils;
 import java.util.ArrayList;
@@ -26,12 +27,14 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekVi
   private CalendarDay mStartDay;
   private CalendarDay mEndDay;
   private CalendarDay mFirstShowDay;
+  private WeekDayViewPager mWeekDayViewPager;
 
-  public WeekViewAdapter(Context context, CalendarDay startDay, CalendarDay endDay) {
+  public WeekViewAdapter(Context context, CalendarDay startDay, CalendarDay endDay, WeekDayViewPager viewPager) {
     mInflater = LayoutInflater.from(context);
     mContext = context;
     mStartDay = startDay;
     mEndDay = endDay;
+    mWeekDayViewPager = viewPager;
     calculateFirstShowDay();
   }
 
@@ -58,7 +61,7 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekVi
     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
         ViewGroup.LayoutParams.MATCH_PARENT);
     weekView.setLayoutParams(params);
-    WeekViewHolder viewHolder = new WeekViewHolder(weekView, mFirstShowDay, mStartDay, mEndDay);
+    WeekViewHolder viewHolder = new WeekViewHolder(weekView, mFirstShowDay, mWeekDayViewPager);
     return viewHolder;
   }
 
@@ -72,15 +75,15 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekVi
     private WeekView mWeekView;
 
 
-    public WeekViewHolder(View view,CalendarDay firstShowDay, CalendarDay startDay, CalendarDay endDay) {
+    public WeekViewHolder(View view,CalendarDay firstShowDay, WeekDayViewPager viewPager) {
       super(view);
       mWeekView = (WeekView)view;
-      mWeekView.setDays(firstShowDay, startDay, endDay);
+      mWeekView.setDays(firstShowDay);
+      mWeekView.setOnDayClickListener(viewPager);
     }
 
     public void bind(int position) {
       mWeekView.setPosition(position);
-
     }
 
   }

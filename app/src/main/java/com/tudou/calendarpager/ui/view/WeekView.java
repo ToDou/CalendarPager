@@ -1,12 +1,11 @@
 package com.tudou.calendarpager.ui.view;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import com.tudou.calendarpager.R;
 import com.tudou.calendarpager.model.CalendarDay;
@@ -21,10 +20,10 @@ public class WeekView extends View {
   private final static int DAY_IN_WEEK = 7;
 
   private CalendarDay mFirstShowDay;
-  private CalendarDay mStartDay;
-  private CalendarDay mEndDay;
   private int mWeekPostion;
   private int mDaysPosition;
+
+  private OnDayClickListener mOnDayClickListener;
 
   private Paint mPaintNormal;
   private Paint mPaintSelect;
@@ -203,10 +202,8 @@ public class WeekView extends View {
     mSpringView.setIndicatorColor(getResources().getColor(indicatorColorId));
   }
 
-  public void setDays(CalendarDay firstShowDay, CalendarDay startDay, CalendarDay endDay) {
+  public void setDays(CalendarDay firstShowDay) {
     mFirstShowDay = firstShowDay;
-    mStartDay = startDay;
-    mEndDay = endDay;
   }
 
   public void setPosition(int position) {
@@ -224,5 +221,45 @@ public class WeekView extends View {
       mWeekCalendarDays.add(new CalendarDay(calendar));
       calendar.roll(Calendar.DAY_OF_YEAR, 1);
     }
+  }
+
+  public int getPositionFromLocation(float x, float y) {
+    int padding = getContext().getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
+    if ((x < padding) || (x > getWidth() - padding)) {
+      return 0;
+    }
+
+    int day = (int) ((x - padding) / ((getWidth() - padding * 2) / 7));
+
+    return day;
+  }
+
+  public CalendarDay getDayFromLocation(float x, float y) {
+    return mWeekCalendarDays.get(getPositionFromLocation(x,y));
+  }
+
+  @Override public boolean onTouchEvent(MotionEvent event) {
+    if (event.getAction() == MotionEvent.ACTION_UP) {
+      CalendarDay calendarDay = getDayFromLocation(event.getX(), event.getY());
+      if (calendarDay != null) {
+        int position = mWeekPostion * DAY_IN_WEEK + getPositionFromLocation(event.getX(), event.getY());
+        onDayClick(calendarDay, position);
+      }
+    }
+    return true;
+  }
+
+  private void onDayClick(CalendarDay calendarDay, int position) {
+    if (mOnDayClickListener != null) {
+      mOnDayClickListener.onDayClick(this, calendarDay, position);
+    }
+  }
+
+  public void setOnDayClickListener(OnDayClickListener onDayClickListener) {
+    mOnDayClickListener = onDayClickListener;
+  }
+
+  public static abstract interface OnDayClickListener {
+    public abstract void onDayClick(WeekView simpleMonthView, CalendarDay calendarDay, int position);
   }
 }

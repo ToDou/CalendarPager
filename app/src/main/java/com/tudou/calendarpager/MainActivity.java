@@ -12,6 +12,7 @@ import butterknife.InjectView;
 import com.tudou.calendarpager.model.CalendarDay;
 import com.tudou.calendarpager.ui.adapter.ContentPagerAdapter;
 import com.tudou.calendarpager.ui.adapter.WeekViewAdapter;
+import com.tudou.calendarpager.ui.view.WeekDayViewPager;
 import com.tudou.calendarpager.ui.view.WeekView;
 
 public class MainActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener {
@@ -19,7 +20,7 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
   private final static String TAG = "MainActivity";
   public static int LIST_TOP_OFFSET = -1;
 
-  @InjectView(R.id.view_pager) ViewPager mViewPagerContent;
+  @InjectView(R.id.view_pager) WeekDayViewPager mViewPagerContent;
   @InjectView(R.id.header_recycler_view) RecyclerView mRecyclerView;
 
   private ContentPagerAdapter mPagerAdapter;
@@ -41,10 +42,11 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
     mViewPagerContent.setAdapter(mPagerAdapter);
     mViewPagerContent.setOnPageChangeListener(this);
 
+
     LinearLayoutManager manager = new LinearLayoutManager(this);
     manager.setOrientation(LinearLayoutManager.HORIZONTAL);
     mRecyclerView.setLayoutManager(manager);
-    mWeekViewAdapter = new WeekViewAdapter(this, new CalendarDay(2015, 5, 1), new CalendarDay(2015, 5, 19));
+    mWeekViewAdapter = new WeekViewAdapter(this, new CalendarDay(2015, 5, 1), new CalendarDay(2015, 5, 19), mViewPagerContent);
     mRecyclerView.setAdapter(mWeekViewAdapter);
     mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
       @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -86,12 +88,14 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
 
   @Override public void onPageScrolled(int position, float positionOffset,
       int positionOffsetPixels) {
+
     Log.e(TAG, "position: "
         + position
         + "      positionOffset: "
         + positionOffset
         + "     positionOffsetPicxels: "
         + positionOffsetPixels);
+
     int i = 0;
     View child = mRecyclerView.getChildAt(i);
     while (child != null && child.getRight() <= 0) {
