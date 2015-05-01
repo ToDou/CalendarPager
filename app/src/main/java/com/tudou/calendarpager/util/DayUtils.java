@@ -1,7 +1,11 @@
 package com.tudou.calendarpager.util;
 
 import com.tudou.calendarpager.model.CalendarDay;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by tudou on 15-5-1.
@@ -32,6 +36,11 @@ public class DayUtils {
     calendar.setTimeInMillis(startDay.getTime());
     calendar.roll(Calendar.DAY_OF_YEAR, -day + 1);
     return new CalendarDay(calendar);
+  }
+
+  public static String formatEnglishTime(long times) {
+    DateFormat df1 = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+    return df1.format(new Date(times));
   }
 
   public static int getDaysInMonth(int month, int year) {

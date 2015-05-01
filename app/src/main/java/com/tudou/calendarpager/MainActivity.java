@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.tudou.calendarpager.model.CalendarDay;
@@ -14,6 +15,7 @@ import com.tudou.calendarpager.ui.adapter.ContentPagerAdapter;
 import com.tudou.calendarpager.ui.adapter.WeekViewAdapter;
 import com.tudou.calendarpager.ui.view.WeekDayViewPager;
 import com.tudou.calendarpager.ui.view.WeekView;
+import com.tudou.calendarpager.util.DayUtils;
 
 public class MainActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener {
 
@@ -22,6 +24,7 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
 
   @InjectView(R.id.view_pager) WeekDayViewPager mViewPagerContent;
   @InjectView(R.id.header_recycler_view) RecyclerView mRecyclerView;
+  @InjectView(R.id.text_day_label) TextView mTextView;
 
   private ContentPagerAdapter mPagerAdapter;
   private WeekViewAdapter mWeekViewAdapter;
@@ -101,6 +104,7 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
       child = mRecyclerView.getChildAt(++i);
     }
     ((WeekView) child).onViewPageScroll(position, positionOffset, positionOffsetPixels);
+    mTextView.setText(DayUtils.formatEnglishTime(mPagerAdapter.getDatas().get(position).getTime()));
   }
 
   @Override public void onPageSelected(int position) {
@@ -111,6 +115,7 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
         week.invalidate();
       }
     }
+
   }
 
   @Override public void onPageScrollStateChanged(int state) {

@@ -57,4 +57,8 @@ public class ContentPagerAdapter extends FragmentPagerAdapter {
         return "";
     }
   }
+
+  public ArrayList<CalendarDay> getDatas() {
+    return mDays;
+  }
 }
