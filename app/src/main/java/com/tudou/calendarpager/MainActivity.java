@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -39,9 +38,6 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
   private void setUpPager() {
     mPagerAdapter = new ContentPagerAdapter(getSupportFragmentManager(), new CalendarDay(2015, 5, 1), new CalendarDay(2015, 5, 19));
     mViewPagerContent.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
-    final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
-        getResources().getDisplayMetrics());
-    mViewPagerContent.setPageMargin(pageMargin);
     mViewPagerContent.setAdapter(mPagerAdapter);
     mViewPagerContent.setOnPageChangeListener(this);
 

@@ -1,6 +1,5 @@
 package com.tudou.calendarpager.ui.view;
 
-import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -25,6 +24,7 @@ public class WeekView extends View {
   private CalendarDay mStartDay;
   private CalendarDay mEndDay;
   private int mWeekPostion;
+  private int mDaysPosition;
 
   private Paint mPaintNormal;
   private Paint mPaintSelect;
@@ -42,10 +42,7 @@ public class WeekView extends View {
   private int indicatorColorId;
   private int indicatorColorsId;
 
-  private ViewPager mViewPager;
-  private ViewPager.OnPageChangeListener delegateListener;
   private SpringView mSpringView;
-  private ObjectAnimator indicatorColorAnim;
 
   private ArrayList<CalendarDay> mWeekCalendarDays;
 
@@ -119,7 +116,7 @@ public class WeekView extends View {
   }
 
   private void drawSpringView(Canvas canvas) {
-
+    if (mWeekPostion  != mDaysPosition / 7) return;
     mSpringView.getHeadPoint().setY(getHeight() / 2);
     mSpringView.getFootPoint().setY(getHeight() / 2);
     mSpringView.makePath();
@@ -131,6 +128,7 @@ public class WeekView extends View {
   }
 
   public void onViewPageScroll(int position, float positionOffset, int positionOffsetPixels) {
+    mDaysPosition = position;
     Log.e(TAG, "position: "
         + position
         + "      positionOffset: "
@@ -138,7 +136,7 @@ public class WeekView extends View {
         + "     positionOffsetPicxels: "
         + positionOffsetPixels);
 
-    if (position < 21 - 1) {
+    if (position % 7 < 7) {
       // radius
       float radiusOffsetHead = 0.5f;
       if(positionOffset < radiusOffsetHead){
@@ -177,10 +175,6 @@ public class WeekView extends View {
       mSpringView.getFootPoint().setX(getDayX(position));
       mSpringView.getHeadPoint().setRadius(radiusMax);
       mSpringView.getFootPoint().setRadius(radiusMax);
-    }
-
-    if(delegateListener != null){
-      delegateListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
     }
 
     invalidate();
@@ -222,6 +216,7 @@ public class WeekView extends View {
   }
 
   private void createWeekCalendardays() {
+    mWeekCalendarDays.clear();
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(mFirstShowDay.getTime());
     calendar.roll(Calendar.DAY_OF_YEAR, mWeekPostion * 7);
