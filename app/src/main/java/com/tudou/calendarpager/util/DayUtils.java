@@ -26,6 +26,14 @@ public class DayUtils {
     return week;
   }
 
+  public static CalendarDay calculateFirstShowDay(CalendarDay startDay) {
+    int day = startDay.calendar.get(Calendar.DAY_OF_WEEK);
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(startDay.getTime());
+    calendar.roll(Calendar.DAY_OF_YEAR, -day + 1);
+    return new CalendarDay(calendar);
+  }
+
   public static int getDaysInMonth(int month, int year) {
     switch (month) {
       case Calendar.JANUARY:

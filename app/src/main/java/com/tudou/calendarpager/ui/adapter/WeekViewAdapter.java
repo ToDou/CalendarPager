@@ -1,26 +1,20 @@
 package com.tudou.calendarpager.ui.adapter;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.tudou.calendarpager.model.CalendarDay;
-import com.tudou.calendarpager.model.CalendarWeek;
 import com.tudou.calendarpager.ui.view.WeekDayViewPager;
 import com.tudou.calendarpager.ui.view.WeekView;
 import com.tudou.calendarpager.util.DayUtils;
-import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by tudou on 15-4-30.
  */
 public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekViewHolder> {
-  private final static int DAY_IN_WEEK = 7;
 
   private LayoutInflater mInflater;
   private Context mContext;
@@ -35,15 +29,7 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekVi
     mStartDay = startDay;
     mEndDay = endDay;
     mWeekDayViewPager = viewPager;
-    calculateFirstShowDay();
-  }
-
-  private void calculateFirstShowDay() {
-    int day = mStartDay.calendar.get(Calendar.DAY_OF_WEEK);
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTimeInMillis(mStartDay.getTime());
-    calendar.roll(Calendar.DAY_OF_YEAR, -day + 1);
-    mFirstShowDay = new CalendarDay(calendar);
+    mFirstShowDay = DayUtils.calculateFirstShowDay(mStartDay);
   }
 
   @Override
