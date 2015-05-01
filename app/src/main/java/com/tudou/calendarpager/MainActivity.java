@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -69,15 +70,14 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
 
   @Override public void onPageScrolled(int position, float positionOffset,
       int positionOffsetPixels) {
-    mRecyclerView.smoothScrollToPosition(position / 7);
    /* mHeaderViewPager.onContentPageScrolled(position, positionOffset, positionOffsetPixels);
     mHeaderAdapter.setSelectDay(position);*/
-   /* Log.e(TAG, "position: "
+    Log.e(TAG, "position: "
         + position
         + "      positionOffset: "
         + positionOffset
         + "     positionOffsetPicxels: "
-        + positionOffsetPixels);*/
+        + positionOffsetPixels);
 
     if ((position + 1) % 7 == 0 && (position + 1) / 7 > 0) {
 //      mRecyclerView.smoothScrollBy(position / 6 * positionOffsetPixels + positionOffsetPixels, 0);
@@ -86,6 +86,7 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
   }
 
   @Override public void onPageSelected(int position) {
+    mRecyclerView.scrollToPosition(position / 7);
     //mHeaderViewPager.onContentPageSelected(position);
   }
 
