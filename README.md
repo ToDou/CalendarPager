@@ -1,5 +1,5 @@
 # CalendarPager
-One library. You can add tags by input something
+This is one horizontal calendar with viewPager.
 
 Screeshot
 ====
@@ -37,7 +37,8 @@ I have not finish.I will create one library here. If you have saw. I will thanks
 
 Thanks
 ====
-[CTagView](https://github.com/cloay/CTagView)
+[flavienlaurent/datetimepicker](https://github.com/flavienlaurent/datetimepicker)
+[chenupt/SpringIndicator](https://github.com/chenupt/SpringIndicator)
 
 License
 ====
