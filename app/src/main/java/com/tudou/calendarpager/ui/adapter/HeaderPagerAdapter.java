@@ -7,6 +7,7 @@ package com.tudou.calendarpager.ui.adapter;
 import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ public class HeaderPagerAdapter extends PagerAdapter {
   private ArrayList<WeekView> views;
 
   private int mSelectDay;
+  private ViewPager mViewPager;
 
   public HeaderPagerAdapter (Context context){
     views = new ArrayList<>();
@@ -32,6 +34,10 @@ public class HeaderPagerAdapter extends PagerAdapter {
   public void setSelectDay(int day) {
     mSelectDay = day;
     notifyDataSetChanged();
+  }
+
+  public void setViewPager(ViewPager viewPager) {
+    mViewPager = viewPager;
   }
 
   @Override public void destroyItem(ViewGroup container, int position, Object object) {
@@ -55,6 +61,7 @@ public class HeaderPagerAdapter extends PagerAdapter {
 
   @Override public Object instantiateItem(ViewGroup container, int position) {
     views.get(position).setSelectDay(mSelectDay);
+    views.get(position).setViewPager(mViewPager);
     views.get(position).invalidate();
     container.addView(views.get(position));
     return views.get(position);
@@ -82,7 +89,7 @@ public class HeaderPagerAdapter extends PagerAdapter {
     super.startUpdate(container);
     for (int i = 0; i < container.getChildCount(); i++) {
       ((WeekView)container.getChildAt(i)).setSelectDay(mSelectDay);
-      ((WeekView)container.getChildAt(i)).invalidate();
+      container.getChildAt(i).invalidate();
     }
   }
 }

@@ -50,6 +50,7 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
     mHeaderViewPager.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
     mHeaderViewPager.setPageMargin(pageMargin);
     mHeaderViewPager.setAdapter(mHeaderAdapter);
+    mHeaderAdapter.setViewPager(mViewPagerContent);
   }
 
   @Override public void onPageScrolled(int position, float positionOffset,
