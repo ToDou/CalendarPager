@@ -37,9 +37,9 @@ I have not finish.I will create one library here. If you have saw. I will thanks
 
 Thanks
 ====
-*[flavienlaurent/datetimepicker](https://github.com/flavienlaurent/datetimepicker)
+* [flavienlaurent/datetimepicker](https://github.com/flavienlaurent/datetimepicker)
 
-*[chenupt/SpringIndicator](https://github.com/chenupt/SpringIndicator)
+* [chenupt/SpringIndicator](https://github.com/chenupt/SpringIndicator)
 
 License
 ====
