@@ -30,8 +30,6 @@ public class WeekView extends View {
   private Paint mPaintSelect;
   private int mSelectDay;
 
-  private static final int INDICATOR_ANIM_DURATION = 3000;
-
   private float acceleration = 0.5f;
   private float headMoveOffset = 0.6f;
   private float footMoveOffset = 1- headMoveOffset;
@@ -105,10 +103,6 @@ public class WeekView extends View {
       float textWidth = mPaintNormal.measureText(content);
       float parentWidth = getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
 
-
-      /*if (mSelectDay + 1 == i) {
-        canvas.drawCircle(getResources().getDimension(R.dimen.activity_horizontal_margin) +  parentWidth / 7 * (i - 1) + parentWidth / 7 / 2, getHeight() / 2, getHeight() / 2 - 10, mPaintSelect);
-      }*/
       float textBaseY = getHeight() - (getHeight() - fontHeight) / 2 - fontMetrics.bottom;
       canvas.drawText(content, getResources().getDimension(R.dimen.activity_horizontal_margin) +  parentWidth / 7 * i + parentWidth / 7 / 2 - textWidth / 2, textBaseY, mPaintNormal);
 
@@ -175,6 +169,12 @@ public class WeekView extends View {
       mSpringView.getFootPoint().setX(getDayX(position));
       mSpringView.getHeadPoint().setRadius(radiusMax);
       mSpringView.getFootPoint().setRadius(radiusMax);
+    }
+
+    if (position % 7 == 6 && positionOffset > 0.8) {
+      mSpringView.paint.setAlpha(0);
+    } else {
+      mSpringView.paint.setAlpha(255);
     }
 
     invalidate();

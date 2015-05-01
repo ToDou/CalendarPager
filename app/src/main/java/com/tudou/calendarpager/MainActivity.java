@@ -102,6 +102,12 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
 
   @Override public void onPageSelected(int position) {
     mRecyclerView.smoothScrollToPosition(position / 7);
+    for (int j = 0; j < mRecyclerView.getChildCount(); j++) {
+      View week = mRecyclerView.getChildAt(j);
+      if (week instanceof WeekView) {
+        week.invalidate();
+      }
+    }
   }
 
   @Override public void onPageScrollStateChanged(int state) {
