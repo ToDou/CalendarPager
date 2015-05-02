@@ -142,13 +142,6 @@ public class WeekView extends View {
 
   public void onViewPageScroll(int position, float positionOffset, int positionOffsetPixels) {
     mDaysPosition = position;
-    Log.e(TAG, "position: "
-        + position
-        + "      positionOffset: "
-        + positionOffset
-        + "     positionOffsetPicxels: "
-        + positionOffsetPixels);
-
     if (position % DAY_IN_WEEK < DAY_IN_WEEK) {
       // radius
       float radiusOffsetHead = 0.5f;
@@ -243,8 +236,12 @@ public class WeekView extends View {
 
   public int getPositionFromLocation(float x, float y) {
     int padding = getContext().getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
-    if ((x < padding) || (x > getWidth() - padding)) {
+    if (x < padding) {
       return 0;
+    }
+
+    if (x > getWidth() - padding) {
+      return 6;
     }
 
     int day = (int) ((x - padding) / ((getWidth() - padding * 2) / DAY_IN_WEEK));
