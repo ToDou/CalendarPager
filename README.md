@@ -1,6 +1,8 @@
 # CalendarPager
 This is one horizontal calendar with viewPager.
 
+The header is create by recyclerview. Every item draw base week by week.You can slide the week recyclerview to next week or pref. I write it because I have used in my work. Maybe not perfect. I will thanks for your suggestion.
+
 Screeshot
 ====
 ![](/screenshot.gif)
