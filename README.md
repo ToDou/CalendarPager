@@ -10,7 +10,7 @@ Just Do
 ====
 First you should add the layout WeekRecyclerView and WeekDayViewPager. @layout/view_week_label and text_day_label can add by yourself.
 ```xml
-    <include layout="@layout/view_week_label"/>
+  <include layout="@layout/view_week_label"/>
 
   <com.test.tudou.library.ui.view.WeekRecyclerView
       android:id="@+id/header_recycler_view"
@@ -50,6 +50,8 @@ Then to init the adapter and viewpager. Also you can add the setDayScrollListene
   }
     
 ```
+And you should create one adapter to extends WeekPagerAdapter. Return one Fragment by createFragmentPager(int position).
+
 Last you can load the data.
 ```java
     private void setUpData() {
