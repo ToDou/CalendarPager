@@ -54,7 +54,21 @@ Then to init the adapter and viewpager. Also you can add the setDayScrollListene
   }
     
 ```
-And you should create one adapter to extends WeekPagerAdapter. Return one Fragment by createFragmentPager(int position).
+And you should create one adapter to extends WeekPagerAdapter. Return one Fragment by createFragmentPager(int position). 
+
+Like This:
+```java
+  public class SimplePagerAdapter extends WeekPagerAdapter {
+
+    public SimplePagerAdapter(FragmentManager fm) {
+      super(fm);
+    }
+    
+    @Override protected Fragment createFragmentPager(int position) {
+      return SimpleFragment.newInstance(mDays.get(position));
+    }
+  }
+```
 
 Last you can load the data.
 ```java
