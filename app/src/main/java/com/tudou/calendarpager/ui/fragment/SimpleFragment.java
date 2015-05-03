@@ -10,9 +10,8 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.tudou.calendarpager.R;
-import com.tudou.calendarpager.model.CalendarDay;
-import com.tudou.calendarpager.util.DayUtils;
-import java.awt.font.TextAttribute;
+import com.test.tudou.library.model.CalendarDay;
+import com.test.tudou.library.util.DayUtils;
 
 /**
  * Created by tudou on 15-4-30.

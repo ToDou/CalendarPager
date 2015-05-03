@@ -5,17 +5,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.tudou.calendarpager.model.CalendarDay;
-import com.tudou.calendarpager.ui.adapter.ContentPagerAdapter;
-import com.tudou.calendarpager.ui.adapter.WeekViewAdapter;
-import com.tudou.calendarpager.ui.view.WeekDayViewPager;
-import com.tudou.calendarpager.ui.view.WeekView;
-import com.tudou.calendarpager.util.DayUtils;
+import com.test.tudou.library.model.CalendarDay;
+import com.test.tudou.library.ui.adapter.WeekPagerAdapter;
+import com.test.tudou.library.ui.adapter.WeekViewAdapter;
+import com.test.tudou.library.ui.view.WeekDayViewPager;
+import com.test.tudou.library.ui.view.WeekView;
+import com.test.tudou.library.util.DayUtils;
+import com.tudou.calendarpager.ui.adapter.SimplePagerAdapter;
+import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener {
 
@@ -26,7 +27,7 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
   @InjectView(R.id.header_recycler_view) RecyclerView mRecyclerView;
   @InjectView(R.id.text_day_label) TextView mTextView;
 
-  private ContentPagerAdapter mPagerAdapter;
+  private WeekPagerAdapter mPagerAdapter;
   private WeekViewAdapter mWeekViewAdapter;
   private static final int OFFSCREEN_PAGE_LIMIT = 1;
 
@@ -40,7 +41,7 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
   }
 
   private void setUpPager() {
-    mPagerAdapter = new ContentPagerAdapter(getSupportFragmentManager(), new CalendarDay(2015, 5, 1), new CalendarDay(2015, 5, 19));
+    mPagerAdapter = new SimplePagerAdapter(getSupportFragmentManager());
     mViewPagerContent.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
     mViewPagerContent.setAdapter(mPagerAdapter);
     mViewPagerContent.setOnPageChangeListener(this);
@@ -49,8 +50,10 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
     LinearLayoutManager manager = new LinearLayoutManager(this);
     manager.setOrientation(LinearLayoutManager.HORIZONTAL);
     mRecyclerView.setLayoutManager(manager);
-    mWeekViewAdapter = new WeekViewAdapter(this, new CalendarDay(2015, 5, 1), new CalendarDay(2015, 5, 19), mViewPagerContent);
+    mWeekViewAdapter = new WeekViewAdapter(this, mViewPagerContent);
     mRecyclerView.setAdapter(mWeekViewAdapter);
+
+    //, new CalendarDay(2015, 5, 1), new CalendarDay(2015, 5, 19),
     mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
       @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
@@ -62,6 +65,14 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
 
       }
     });
+
+    ArrayList<CalendarDay> calendarDays = new ArrayList<>();
+    calendarDays.add(new CalendarDay(2015, 5, 1));
+    calendarDays.add(new CalendarDay(2015, 5, 4));
+    calendarDays.add(new CalendarDay(2015, 5, 6));
+    calendarDays.add(new CalendarDay(2015, 5, 20));
+    mWeekViewAdapter.setData(calendarDays.get(0), calendarDays.get(calendarDays.size() - 1), calendarDays);
+    mPagerAdapter.setData(calendarDays.get(0), calendarDays.get(calendarDays.size() - 1));
   }
 
   private void adjustPosition(RecyclerView recyclerView, int newState) {
@@ -90,16 +101,10 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
 
   @Override public void onPageScrolled(int position, float positionOffset,
       int positionOffsetPixels) {
-
-    Log.e(TAG, "position: "
-        + position
-        + "      positionOffset: "
-        + positionOffset
-        + "     positionOffsetPicxels: "
-        + positionOffsetPixels);
-
     int i = 0;
     View child = mRecyclerView.getChildAt(i);
+
+    if (child == null) return;
     while (child != null && child.getRight() <= 0) {
       child = mRecyclerView.getChildAt(++i);
     }

@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+  <color name="text_color_dark">@color/color_333333</color>
+  <color name="text_color_normal">@color/color_666666</color>
+  <color name="text_color_light">@color/color_CCCCCC</color>
+
+  <color name="color_333333">#333333</color>
+  <color name="color_666666">#666666</color>
+  <color name="color_CCCCCC">#CCCCCC</color>
+  <color name="color_1B5EA1">#1B5EA1</color>
+
 </resources>
