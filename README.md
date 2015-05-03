@@ -13,20 +13,20 @@ First you should add the layout WeekRecyclerView and WeekDayViewPager. @layout/v
   <include layout="@layout/view_week_label"/>
 
   <com.test.tudou.library.ui.view.WeekRecyclerView
-      android:id="@+id/header_recycler_view"
-      android:layout_width="match_parent"
-      android:layout_height="48dp"
-      android:clipToPadding="false"
-      android:scrollbars="none"/>
+    android:id="@+id/header_recycler_view"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:clipToPadding="false"
+    android:scrollbars="none"/>
 
   <TextView
-      android:id="@+id/text_day_label"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="@dimen/default_padding"
-      tools:text="sjidg"
-      android:layout_gravity="center_horizontal"
-      />
+    android:id="@+id/text_day_label"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/default_padding"
+    tools:text="sjidg"
+    android:layout_gravity="center_horizontal"
+    />
 
   <com.test.tudou.library.ui.view.WeekDayViewPager
     android:id="@+id/view_pager"
@@ -38,7 +38,7 @@ First you should add the layout WeekRecyclerView and WeekDayViewPager. @layout/v
 ```
 Then to init the adapter and viewpager. Also you can add the setDayScrollListener to change the text of text_day_label textView to show the day.
 ```java
-    private void setUpPager() {
+  private void setUpPager() {
     mPagerAdapter = new SimplePagerAdapter(getSupportFragmentManager());
     mViewPagerContent.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
     mViewPagerContent.setAdapter(mPagerAdapter);
@@ -54,7 +54,7 @@ And you should create one adapter to extends WeekPagerAdapter. Return one Fragme
 
 Last you can load the data.
 ```java
-    private void setUpData() {
+  private void setUpData() {
     ArrayList<CalendarDay> reachAbleDays = new ArrayList<>();
     reachAbleDays.add(new CalendarDay(2015, 5, 1));
     reachAbleDays.add(new CalendarDay(2015, 5, 4));
