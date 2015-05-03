@@ -5,7 +5,7 @@ import android.graphics.Path;
 /**
  * Created by chenupt@gmail.com on 2015/1/31. Description : Draw a head point and foot point.
  */
-public class SpringView {
+public class Spring {
 
   public Paint paint;
   public Path path;
@@ -13,7 +13,7 @@ public class SpringView {
   public Point headPoint;
   public Point footPoint;
 
-  public SpringView() {
+  public Spring() {
     init();
   }
 

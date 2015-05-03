@@ -45,7 +45,7 @@ public class WeekView extends View {
   private int indicatorColor;
   private int indicatorColorsId;
 
-  private SpringView mSpringView;
+  private Spring mSpringView;
 
   private ArrayList<CalendarDay> mWeekCalendarDays;
 
@@ -217,7 +217,7 @@ public class WeekView extends View {
   }
 
   private void addPointView() {
-    mSpringView = new SpringView();
+    mSpringView = new Spring();
     mSpringView.setIndicatorColor(indicatorColor);
   }
 

@@ -7,7 +7,7 @@
 
   <include layout="@layout/view_week_label"/>
 
-  <android.support.v7.widget.RecyclerView
+  <com.test.tudou.library.ui.view.WeekRecyclerView
       android:id="@+id/header_recycler_view"
       android:layout_width="match_parent"
       android:layout_height="48dp"
