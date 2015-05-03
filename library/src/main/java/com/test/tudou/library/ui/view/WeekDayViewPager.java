@@ -12,7 +12,15 @@ import com.test.tudou.library.model.CalendarDay;
  */
 public class WeekDayViewPager extends ViewPager implements WeekView.OnDayClickListener {
 
+  public interface DayScrollListener {
+    public void onDayPageScrolled(int position, float positionOffset,
+        int positionOffsetPixels);
+    public void onDayPageSelected(int position);
+    public void onDayPageScrollStateChanged(int state);
+  }
+
   private RecyclerView mRecyclerView;
+  private DayScrollListener mDayScrollListener;
 
   public WeekDayViewPager(Context context) {
     this(context, null);
@@ -31,10 +39,15 @@ public class WeekDayViewPager extends ViewPager implements WeekView.OnDayClickLi
     updateListener();
   }
 
+  public void setDayScrollListener(DayScrollListener dayScrollListener) {
+    mDayScrollListener = dayScrollListener;
+  }
+
   private void updateListener() {
     setOnPageChangeListener(new OnPageChangeListener() {
       @Override public void onPageScrolled(int position, float positionOffset,
           int positionOffsetPixels) {
+        onDayPaegScrolled(position, positionOffset, positionOffsetPixels);
         int i = 0;
         View child = mRecyclerView.getChildAt(i);
 
@@ -43,10 +56,10 @@ public class WeekDayViewPager extends ViewPager implements WeekView.OnDayClickLi
           child = mRecyclerView.getChildAt(++i);
         }
         ((WeekView) child).onViewPageScroll(position, positionOffset, positionOffsetPixels);
-        //mTextView.setText(DayUtils.formatEnglishTime(mPagerAdapter.getDatas().get(position).getTime()));
       }
 
       @Override public void onPageSelected(int position) {
+        onDayPageSelected(position);
         mRecyclerView.smoothScrollToPosition(position / 7);
         for (int j = 0; j < mRecyclerView.getChildCount(); j++) {
           View week = mRecyclerView.getChildAt(j);
@@ -57,10 +70,28 @@ public class WeekDayViewPager extends ViewPager implements WeekView.OnDayClickLi
       }
 
       @Override public void onPageScrollStateChanged(int state) {
-
+        onDayPageScrollStateChanged(state);
       }
     });
   }
 
+  private void onDayPaegScrolled(int position, float positionOffset,
+      int positionOffsetPixels) {
+    if (mDayScrollListener != null) {
+      mDayScrollListener.onDayPageScrolled(position, positionOffset, positionOffsetPixels);
+    }
+  }
+
+  private void onDayPageSelected(int position) {
+    if (mDayScrollListener != null) {
+      mDayScrollListener.onDayPageSelected(position);
+    }
+  }
+
+  private void onDayPageScrollStateChanged(int state) {
+    if (mDayScrollListener != null) {
+      mDayScrollListener.onDayPageScrollStateChanged(state);
+    }
+  }
 
 }

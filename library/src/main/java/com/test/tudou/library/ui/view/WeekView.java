@@ -43,11 +43,19 @@ public class WeekView extends View {
   private boolean mLastPostionFinishing;
 
   private int indicatorColor;
-  private int indicatorColorsId;
 
   private Spring mSpringView;
 
   private ArrayList<CalendarDay> mWeekCalendarDays;
+
+
+  public WeekView(Context context, int mTextNormalColor, int mTextSelectColor, int mTextUnableColor, int indicatorColor) {
+    this(context);
+    this.mTextNormalColor = mTextNormalColor;
+    this.mTextSelectColor = mTextSelectColor;
+    this.mTextUnableColor = mTextUnableColor;
+    this.indicatorColor = indicatorColor;
+  }
 
   public WeekView(Context context) {
     this(context, null);
@@ -78,7 +86,7 @@ public class WeekView extends View {
 
 
   private void initPaint() {
-    indicatorColor = getResources().getColor(R.color.color_1B5EA1);
+    indicatorColor = getResources().getColor(R.color.color_18ffff);
     mTextSelectColor = getResources().getColor(android.R.color.white);
     mTextNormalColor = getResources().getColor(R.color.text_color_normal);
     mTextUnableColor = getResources().getColor(R.color.text_color_light);
@@ -298,6 +306,9 @@ public class WeekView extends View {
     for (CalendarDay calendarDay : ableCalendayDays) {
       mAbleDates.add(calendarDay.getDayString());
     }
+    if (mAbleDates.size() == 0) {
+      mTextUnableColor = mTextNormalColor;
+    }
     invalidate();
   }
 
@@ -305,4 +316,19 @@ public class WeekView extends View {
     public abstract void onDayClick(WeekView simpleMonthView, CalendarDay calendarDay, int position);
   }
 
+  public void setTextNormalColor(int mTextNormalColor) {
+    this.mTextNormalColor = mTextNormalColor;
+  }
+
+  public void setTextSelectColor(int mTextSelectColor) {
+    this.mTextSelectColor = mTextSelectColor;
+  }
+
+  public void setTextUnableColor(int mTextUnableColor) {
+    this.mTextUnableColor = mTextUnableColor;
+  }
+
+  public void setIndicatorColor(int indicatorColor) {
+    this.indicatorColor = indicatorColor;
+  }
 }

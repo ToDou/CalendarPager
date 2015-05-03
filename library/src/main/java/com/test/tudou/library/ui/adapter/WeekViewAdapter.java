@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import com.test.tudou.library.R;
 import com.test.tudou.library.model.CalendarDay;
 import com.test.tudou.library.ui.view.WeekDayViewPager;
 import com.test.tudou.library.ui.view.WeekView;
@@ -25,18 +26,36 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekVi
   private int mSelectPosition;
   private ArrayList<CalendarDay> mAbleCalendayDays;
 
+  /**
+   * week view value
+   */
+  private int mTextNormalColor;
+  private int mTextSelectColor;
+  private int mTextUnableColor;
+  private int indicatorColor;
+
   public WeekViewAdapter(Context context, WeekDayViewPager viewPager) {
     mContext = context;
     mWeekDayViewPager = viewPager;
     mAbleCalendayDays = new ArrayList<>();
+    updateColor();
+  }
+
+  private void updateColor() {
+    indicatorColor = mContext.getResources().getColor(R.color.color_18ffff);
+    mTextSelectColor = mContext.getResources().getColor(android.R.color.white);
+    mTextNormalColor = mContext.getResources().getColor(R.color.text_color_normal);
+    mTextUnableColor = mContext.getResources().getColor(R.color.text_color_light);
   }
 
   public void setData(CalendarDay startDay, CalendarDay endDay, ArrayList<CalendarDay> calendarDayArrayList) {
     mStartDay = startDay;
     mEndDay = endDay;
     mFirstShowDay = DayUtils.calculateFirstShowDay(mStartDay);
-    mAbleCalendayDays.clear();
-    mAbleCalendayDays.addAll(calendarDayArrayList);
+    if (calendarDayArrayList != null) {
+      mAbleCalendayDays.clear();
+      mAbleCalendayDays.addAll(calendarDayArrayList);
+    }
     notifyDataSetChanged();
   }
 
@@ -53,7 +72,7 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekVi
 
   @Override
   public WeekViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-    WeekView weekView = new WeekView(mContext);
+    WeekView weekView = new WeekView(mContext, mTextNormalColor, mTextSelectColor, mTextUnableColor, indicatorColor);
     int width = mContext.getResources().getDisplayMetrics().widthPixels;
     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
         ViewGroup.LayoutParams.MATCH_PARENT);
@@ -94,5 +113,19 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekVi
 
   }
 
+  public void setTextNormalColor(int mTextNormalColor) {
+    this.mTextNormalColor = mTextNormalColor;
+  }
 
+  public void setTextSelectColor(int mTextSelectColor) {
+    this.mTextSelectColor = mTextSelectColor;
+  }
+
+  public void setTextUnableColor(int mTextUnableColor) {
+    this.mTextUnableColor = mTextUnableColor;
+  }
+
+  public void setIndicatorColor(int indicatorColor) {
+    this.indicatorColor = indicatorColor;
+  }
 }
