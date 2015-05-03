@@ -8,32 +8,72 @@ Screeshot
 
 Just Do
 ====
-```java
-    mPagerAdapter = new ContentPagerAdapter(getSupportFragmentManager(), new CalendarDay(2015, 5, 1), new CalendarDay(2015, 5, 19));
-    mViewPagerContent.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
-    mViewPagerContent.setAdapter(mPagerAdapter);
-    mViewPagerContent.setOnPageChangeListener(this);
+First you should add the layout WeekRecyclerView and WeekDayViewPager. @layout/view_week_label and text_day_label can add by yourself.
+```xml
+    <include layout="@layout/view_week_label"/>
 
+  <com.test.tudou.library.ui.view.WeekRecyclerView
+      android:id="@+id/header_recycler_view"
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:clipToPadding="false"
+      android:scrollbars="none"/>
 
-    LinearLayoutManager manager = new LinearLayoutManager(this);
-    manager.setOrientation(LinearLayoutManager.HORIZONTAL);
-    mRecyclerView.setLayoutManager(manager);
-    mWeekViewAdapter = new WeekViewAdapter(this, new CalendarDay(2015, 5, 1), new CalendarDay(2015, 5, 19), mViewPagerContent);
-    mRecyclerView.setAdapter(mWeekViewAdapter);
-    mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-      @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-        super.onScrollStateChanged(recyclerView, newState);
-        adjustPosition(recyclerView, newState);
-      }
+  <TextView
+      android:id="@+id/text_day_label"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:padding="@dimen/default_padding"
+      tools:text="sjidg"
+      android:layout_gravity="center_horizontal"
+      />
 
-      @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-        super.onScrolled(recyclerView, dx, dy);
-
-      }
-    });
+  <com.test.tudou.library.ui.view.WeekDayViewPager
+    android:id="@+id/view_pager"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:background="#DDDDDD"/>
     
 ```
-I have not finish.I will create one library here. If you have saw. I will thanks for your suggestion.
+Then to init the adapter and viewpager. Also you can add the setDayScrollListener to change the text of text_day_label textView to show the day.
+```java
+    private void setUpPager() {
+    mPagerAdapter = new SimplePagerAdapter(getSupportFragmentManager());
+    mViewPagerContent.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
+    mViewPagerContent.setAdapter(mPagerAdapter);
+    mViewPagerContent.setWeekRecyclerView(mWeekRecyclerView);
+    mViewPagerContent.setDayScrollListener(this);
+    mWeekViewAdapter = new WeekViewAdapter(this, mViewPagerContent);
+    mWeekViewAdapter.setTextNormalColor(getResources().getColor(android.R.color.darker_gray));
+    mWeekRecyclerView.setAdapter(mWeekViewAdapter);
+  }
+    
+```
+Last you can load the data.
+```java
+    private void setUpData() {
+    ArrayList<CalendarDay> reachAbleDays = new ArrayList<>();
+    reachAbleDays.add(new CalendarDay(2015, 5, 1));
+    reachAbleDays.add(new CalendarDay(2015, 5, 4));
+    reachAbleDays.add(new CalendarDay(2015, 5, 6));
+    reachAbleDays.add(new CalendarDay(2015, 5, 20));
+    mWeekViewAdapter.setData(reachAbleDays.get(0), reachAbleDays.get(reachAbleDays.size() - 1), null);
+    mPagerAdapter.setData(reachAbleDays.get(0), reachAbleDays.get(reachAbleDays.size() - 1));
+  }
+    
+```
+If you want one color to distinguish some days. You can add reachAbleDays. And set the color by setTextUnableColor
+```java
+    ...
+    mWeekViewAdapter.setData(reachAbleDays.get(0), reachAbleDays.get(reachAbleDays.size() - 1), reachAbleDays);
+    ...
+    
+```
+
+I will create one library here. If you have saw. I will thanks for your suggestion.
+
+
 
 Thanks
 ====
