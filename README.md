@@ -9,6 +9,13 @@ Screeshot
 ====
 ![](/screenshot.gif)
 
+Installation
+====
+```groovy
+dependencies {
+    compile 'com.github.todou:calendarpager:1.0.0'
+}
+```
 
 Just Do
 ====
