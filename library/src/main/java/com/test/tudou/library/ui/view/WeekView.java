@@ -30,6 +30,7 @@ public class WeekView extends View {
   private int mTextNormalColor;
   private int mTextSelectColor;
   private int mTextUnableColor;
+  private float mTextSize;
 
   private ArrayList<String> mAbleDates;
 
@@ -330,5 +331,10 @@ public class WeekView extends View {
 
   public void setIndicatorColor(int indicatorColor) {
     this.indicatorColor = indicatorColor;
+  }
+
+  public void setTextSize(float textSize) {
+    this.mTextSize = textSize;
+    mPaintNormal.setTextSize(mTextSize);
   }
 }

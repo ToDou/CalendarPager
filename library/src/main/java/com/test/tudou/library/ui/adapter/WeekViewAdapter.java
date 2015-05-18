@@ -103,6 +103,7 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekVi
       mWeekView.setDays(firstShowDay);
       mWeekView.setOnDayClickListener(viewPager);
       mWeekView.setOnAdapterDayClickListener(weekViewAdapter);
+      mWeekView.setTextSize(view.getContext().getResources().getDimension(R.dimen.si_default_text_size));
       mWeekView.setAbleDates(mAbleCalendayDays);
     }
 
