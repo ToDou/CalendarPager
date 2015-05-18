@@ -1,4 +1,4 @@
-package com.test.tudou.library.ui.view;
+package com.test.tudou.library.WeekPager.view;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

@@ -23,28 +23,30 @@ First you should add the layout WeekRecyclerView and WeekDayViewPager. @layout/v
 ```xml
   <include layout="@layout/view_week_label"/>
 
-  <com.test.tudou.library.ui.view.WeekRecyclerView
-    android:id="@+id/header_recycler_view"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:clipToPadding="false"
-    android:scrollbars="none"/>
+  <include layout="@layout/view_week_label"/>
 
-  <TextView
-    android:id="@+id/text_day_label"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/default_padding"
-    tools:text="sjidg"
-    android:layout_gravity="center_horizontal"
-    />
+    <com.test.tudou.library.WeekPager.view.WeekRecyclerView
+        android:id="@+id/header_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:clipToPadding="false"
+        android:scrollbars="none"/>
 
-  <com.test.tudou.library.ui.view.WeekDayViewPager
-    android:id="@+id/view_pager"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    android:background="#DDDDDD"/>
+    <TextView
+        android:id="@+id/text_day_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_padding"
+        tools:text="sjidg"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <com.test.tudou.library.WeekPager.view.WeekDayViewPager
+      android:id="@+id/view_pager"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:background="#DDDDDD"/>
     
 ```
 Then to init the adapter and viewpager. Also you can add the setDayScrollListener to change the text of text_day_label textView to show the day.

@@ -1,4 +1,4 @@
-package com.test.tudou.library.ui.view;
+package com.test.tudou.library.WeekPager.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -93,7 +93,7 @@ public class WeekView extends View {
     mTextUnableColor = getResources().getColor(R.color.text_color_light);
     mPaintNormal = new Paint(Paint.ANTI_ALIAS_FLAG);
     mPaintNormal.setColor(mTextNormalColor);
-    mPaintNormal.setTextSize(26f);
+    mPaintNormal.setTextSize(getResources().getDimension(R.dimen.si_default_text_size));
 
     initSpringView();
   }
