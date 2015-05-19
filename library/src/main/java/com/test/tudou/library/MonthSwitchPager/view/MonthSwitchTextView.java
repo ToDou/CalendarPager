@@ -3,6 +3,7 @@ package com.test.tudou.library.MonthSwitchPager.view;
 import android.content.Context;
 import android.text.format.DateUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -20,6 +21,8 @@ import java.util.Calendar;
  */
 public class MonthSwitchTextView extends RelativeLayout {
 
+  private final static String TAG = "MonthSwitchTextView";
+
   @InjectView(android.R.id.icon1) ForegroundImageView mIconLeft;
   @InjectView(android.R.id.icon2) ForegroundImageView mIconRight;
   @InjectView(android.R.id.text1) TextView mTextTitle;
@@ -28,6 +31,7 @@ public class MonthSwitchTextView extends RelativeLayout {
   private CalendarDay mFirstDay;
   private int mCount;
   private MonthRecyclerView mMonthRecyclerView;
+  private int mPrePosition;
 
   public MonthSwitchTextView(Context context) {
     this(context, null);
@@ -99,12 +103,19 @@ public class MonthSwitchTextView extends RelativeLayout {
   }
 
   private void updateText() {
+    if (mPrePosition == mPosition && mPrePosition != 0) {
+      return;
+    }
+    mPrePosition = mPosition;
+
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(mFirstDay.getTime());
     int position = calendar.get(Calendar.DAY_OF_MONTH);
     calendar.add(Calendar.DAY_OF_MONTH, -(position - 1));
     calendar.add(Calendar.MONTH, mPosition);
-    int flags = DateUtils.FORMAT_NO_MONTH_DAY + DateUtils.FORMAT_SHOW_DATE + DateUtils.FORMAT_SHOW_YEAR;
+    int flags =
+        DateUtils.FORMAT_NO_MONTH_DAY + DateUtils.FORMAT_SHOW_DATE + DateUtils.FORMAT_SHOW_YEAR;
+    Log.e(TAG, DateUtils.formatDateTime(getContext(), calendar.getTimeInMillis(), flags));
     mTextTitle.setText(DateUtils.formatDateTime(getContext(), calendar.getTimeInMillis(), flags));
   }
 }
