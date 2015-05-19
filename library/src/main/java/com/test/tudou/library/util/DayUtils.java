@@ -35,7 +35,7 @@ public class DayUtils {
     if (startDay.year == endDay.year) {
       return endDay.month - startDay.month + 1;
     } else if (startDay.year < endDay.year) {
-      return (endDay.year - startDay.year) * 12 + (12 - startDay.month) + endDay.month + 1;
+      return (endDay.year - startDay.year - 1) * 12 + (12 - startDay.month) + endDay.month + 1;
     }
     return monthCount;
   }

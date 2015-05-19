@@ -13,17 +13,19 @@ import java.util.ArrayList;
 /**
  * Created by tudou on 15-4-30.
  */
-public class MonthViewAdapter extends RecyclerView.Adapter<MonthViewAdapter.MonthViewHolder> {
+public class MonthViewAdapter extends RecyclerView.Adapter<MonthViewAdapter.MonthViewHolder> implements
+    MonthView.OnDayClickListener {
 
   private Context mContext;
   private CalendarDay mStartDay;
   private CalendarDay mEndDay;
-  private int mSelectPosition;
+  private CalendarDay mSelectCalendarDay;
   private ArrayList<CalendarDay> mAbleCalendayDays;
 
   public MonthViewAdapter(Context context) {
     mContext = context;
     mAbleCalendayDays = new ArrayList<>();
+    mSelectCalendarDay = new CalendarDay(System.currentTimeMillis());
   }
 
   public void setData(CalendarDay startDay, CalendarDay endDay, ArrayList<CalendarDay> calendarDayArrayList) {
@@ -50,6 +52,7 @@ public class MonthViewAdapter extends RecyclerView.Adapter<MonthViewAdapter.Mont
   @Override
   public MonthViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
     MonthView monthView = new MonthView(mContext);
+    monthView.setOnDayClickListener(this);
     int width = mContext.getResources().getDisplayMetrics().widthPixels;
     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
         ViewGroup.LayoutParams.MATCH_PARENT);
@@ -60,7 +63,12 @@ public class MonthViewAdapter extends RecyclerView.Adapter<MonthViewAdapter.Mont
 
   @Override
   public void onBindViewHolder(final MonthViewHolder viewHolder, final int position) {
-    viewHolder.bind(position, mSelectPosition);
+    viewHolder.bind(position, mSelectCalendarDay);
+  }
+
+  @Override public void onDayClick(CalendarDay calendarDay) {
+    mSelectCalendarDay = calendarDay;
+    notifyDataSetChanged();
   }
 
   public static class MonthViewHolder extends RecyclerView.ViewHolder {
@@ -73,7 +81,8 @@ public class MonthViewAdapter extends RecyclerView.Adapter<MonthViewAdapter.Mont
       monthView.setFirstDay(startDay);
     }
 
-    public void bind(int position, int selectPostion) {
+    public void bind(int position, CalendarDay calendarDay) {
+      monthView.setSelectDay(calendarDay);
       monthView.setMonthPosition(position);
     }
 
