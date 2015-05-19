@@ -22,9 +22,7 @@ Just Do
 First you should add the layout WeekRecyclerView and WeekDayViewPager. @layout/view_week_label and text_day_label can add by yourself.
 ```xml
   <include layout="@layout/view_week_label"/>
-
-  <include layout="@layout/view_week_label"/>
-
+  
     <com.test.tudou.library.WeekPager.view.WeekRecyclerView
         android:id="@+id/header_recycler_view"
         android:layout_width="match_parent"
