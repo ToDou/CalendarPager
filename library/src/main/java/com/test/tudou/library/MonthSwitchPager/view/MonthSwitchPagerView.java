@@ -1,8 +1,6 @@
 package com.test.tudou.library.MonthSwitchPager.view;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -18,7 +16,7 @@ import com.test.tudou.library.model.CalendarDay;
 public class MonthSwitchPagerView extends LinearLayout {
 
   @InjectView(android.R.id.text2) MonthSwitchTextView mSwitchText;
-  @InjectView(android.R.id.content) RecyclerView mRecyclerView;
+  @InjectView(android.R.id.content) MonthRecyclerView mRecyclerView;
 
   private MonthViewAdapter mMonthAdapter;
 
@@ -40,13 +38,11 @@ public class MonthSwitchPagerView extends LinearLayout {
     LayoutInflater.from(context).inflate(R.layout.view_month_switch_container, this);
     ButterKnife.inject(this);
 
-    LinearLayoutManager manager = new LinearLayoutManager(getContext());
-    manager.setOrientation(LinearLayoutManager.HORIZONTAL);
-    mRecyclerView.setLayoutManager(manager);
-
     mMonthAdapter = new MonthViewAdapter(context);
     mMonthAdapter.setData(new CalendarDay(2015, 5, 6), new CalendarDay(2017, 5, 5), null);
-
+    mSwitchText.setDay(new CalendarDay(2015, 5, 6), new CalendarDay(2017, 5, 5));
+    mSwitchText.setMonthRecyclerView(mRecyclerView);
+    mRecyclerView.setMonthSwitchTextView(mSwitchText);
     mRecyclerView.setAdapter(mMonthAdapter);
   }
 }

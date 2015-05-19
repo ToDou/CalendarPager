@@ -9,10 +9,11 @@
     android:layout_height="wrap_content"
     />
 
-  <android.support.v7.widget.RecyclerView
+  <com.test.tudou.library.MonthSwitchPager.view.MonthRecyclerView
     android:id="@android:id/content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
     />
 
 </LinearLayout>

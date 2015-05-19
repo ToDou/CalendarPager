@@ -10,6 +10,7 @@ import android.view.View;
 import com.test.tudou.library.R;
 import com.test.tudou.library.model.CalendarDay;
 import com.test.tudou.library.util.DayUtils;
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -31,6 +32,7 @@ public class MonthView extends View {
   private int mTextNormalColor;
   protected int mRowHeight = DEFAULT_HEIGHT;
   private int mNumRows = DEFAULT_NUM_ROWS;
+  private int rowNum;
 
 
   public MonthView(Context context) {
@@ -73,9 +75,9 @@ public class MonthView extends View {
     mDays.clear();
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(mFirstDay.getTime());
-    calendar.add(Calendar.MONTH, mMonthPosition);
     int position = calendar.get(Calendar.DAY_OF_MONTH);
     calendar.roll(Calendar.DAY_OF_MONTH, -(position - 1));
+    calendar.add(Calendar.MONTH, mMonthPosition);
     int year = calendar.get(Calendar.YEAR);
     int month = calendar.get(Calendar.MONTH);
     Log.e(TAG, month + " yue " + year);
@@ -91,8 +93,31 @@ public class MonthView extends View {
       super.onDraw(canvas);
       return;
     }
+    rowNum = 0;
+    drawWeekLable(canvas);
+    drawMonthNum(canvas);
+  }
 
-    int rowNum = 0;
+  private void drawWeekLable(Canvas canvas) {
+    String[] weeks = DateFormatSymbols.getInstance().getShortWeekdays();
+    for (int i = 0; i < weeks.length; i++) {
+
+      String content = String.valueOf(weeks[i]);
+      Paint.FontMetrics fontMetrics = mPaintNormal.getFontMetrics();
+      float fontHeight = fontMetrics.bottom - fontMetrics.top;
+      float textWidth = mPaintNormal.measureText(content);
+      float parentWidth = getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
+      float y = mRowHeight  * rowNum + mRowHeight - (mRowHeight - fontHeight) / 2 - fontMetrics.bottom;
+      float x = getResources().getDimension(R.dimen.activity_horizontal_margin)
+          + parentWidth / DAY_IN_WEEK * (i - 1)
+          + parentWidth / DAY_IN_WEEK / 2 - textWidth / 2;
+
+      canvas.drawText(content, x, y, mPaintNormal);
+    }
+    rowNum++;
+  }
+
+  private void drawMonthNum(Canvas canvas) {
     for (int i = 0; i < mDays.size(); i++) {
       CalendarDay calendarDay = mDays.get(i);
       Calendar calendar = Calendar.getInstance();

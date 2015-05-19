@@ -1,7 +1,7 @@
 package com.test.tudou.library.MonthSwitchPager.view;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
+import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +11,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.test.tudou.library.R;
-import java.util.ArrayList;
+import com.test.tudou.library.model.CalendarDay;
+import com.test.tudou.library.util.DayUtils;
+import java.util.Calendar;
 
 /**
  * Created by tudou on 15-5-18.
@@ -22,10 +24,10 @@ public class MonthSwitchTextView extends RelativeLayout {
   @InjectView(android.R.id.icon2) ForegroundImageView mIconRight;
   @InjectView(android.R.id.text1) TextView mTextTitle;
 
-  private int mCurrentPostion;
-
-  private ViewPager mViewPager;
-  private ArrayList<String> mStrings;
+  private int mPosition;
+  private CalendarDay mFirstDay;
+  private int mCount;
+  private MonthRecyclerView mMonthRecyclerView;
 
   public MonthSwitchTextView(Context context) {
     this(context, null);
@@ -45,23 +47,18 @@ public class MonthSwitchTextView extends RelativeLayout {
     ButterKnife.inject(this);
   }
 
-  public void setData(ArrayList<String> maps) {
-    //mMaps = maps;
-    update();
-  }
-
   private void updateView() {
-    if (mCurrentPostion == 0) {
+    if (mPosition == 0) {
       mIconLeft.setVisibility(View.GONE);
     } else {
       mIconLeft.setVisibility(View.VISIBLE);
     }
-    if (mCurrentPostion == mStrings.size() - 1) {
+    if (mPosition == mCount - 1) {
       mIconRight.setVisibility(View.GONE);
     } else {
       mIconRight.setVisibility(View.VISIBLE);
     }
-    mTextTitle.setText(mStrings.get(mCurrentPostion));
+    updateText();
   }
 
   private void update() {
@@ -74,38 +71,40 @@ public class MonthSwitchTextView extends RelativeLayout {
   public void onClick(View view) {
     switch (view.getId()) {
       case android.R.id.icon1:
-        mCurrentPostion--;
+        mPosition--;
         update();
-        mViewPager.setCurrentItem(mCurrentPostion);
+        mMonthRecyclerView.scrollToPosition(mPosition);
         break;
       case android.R.id.icon2:
-        mCurrentPostion++;
+        mPosition++;
         update();
-        mViewPager.setCurrentItem(mCurrentPostion);
+        mMonthRecyclerView.scrollToPosition(mPosition);
         break;
     }
   }
 
-  public void setViewPager(ViewPager viewPager) {
-    mViewPager = viewPager;
-    setUpPagerListener();
+  public void setPosition(int position) {
+    mPosition = position;
+    update();
   }
 
-  private void setUpPagerListener() {
-    mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-      @Override
-      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+  public void setDay(CalendarDay startDay, CalendarDay endDay) {
+    mFirstDay = startDay;
+    mCount = DayUtils.calculateMonthCount(startDay, endDay);
+    update();
+  }
 
-      }
+  public void setMonthRecyclerView(MonthRecyclerView recyclerView) {
+    mMonthRecyclerView = recyclerView;
+  }
 
-      @Override public void onPageSelected(int position) {
-        mCurrentPostion = position;
-        update();
-      }
-
-      @Override public void onPageScrollStateChanged(int state) {
-
-      }
-    });
+  private void updateText() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(mFirstDay.getTime());
+    int position = calendar.get(Calendar.DAY_OF_MONTH);
+    calendar.add(Calendar.DAY_OF_MONTH, -(position - 1));
+    calendar.add(Calendar.MONTH, mPosition);
+    int flags = DateUtils.FORMAT_NO_MONTH_DAY + DateUtils.FORMAT_SHOW_DATE + DateUtils.FORMAT_SHOW_YEAR;
+    mTextTitle.setText(DateUtils.formatDateTime(getContext(), calendar.getTimeInMillis(), flags));
   }
 }
