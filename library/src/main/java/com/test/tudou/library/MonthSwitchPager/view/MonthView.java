@@ -23,7 +23,7 @@ public class MonthView extends View {
   private final static int DAY_IN_WEEK = 7;
   private final static float DAY_IN_MONTH_PADDING_VERTICAL = 6.0f;
   private final static int DEFAULT_HEIGHT = 32;
-  protected static final int DEFAULT_NUM_ROWS = 6;
+  protected static final int DEFAULT_NUM_ROWS = 7;
 
   private ArrayList<CalendarDay> mDays;
   private CalendarDay mFirstDay;
@@ -170,7 +170,7 @@ public class MonthView extends View {
   }
 
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    setMeasuredDimension(View.MeasureSpec.getSize(widthMeasureSpec), mRowHeight * mNumRows);
+    setMeasuredDimension(View.MeasureSpec.getSize(widthMeasureSpec), mRowHeight * mNumRows + mRowHeight / 2);
   }
 
   public boolean onTouchEvent(MotionEvent event) {

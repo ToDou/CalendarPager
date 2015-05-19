@@ -6,6 +6,7 @@
   <dimen name="default_padding">8dp</dimen>
 
   <dimen name="default_month_row_height">32dp</dimen>
+  <dimen name="default_month_view_height">240dp</dimen>
 
   <dimen name="si_default_text_size">14sp</dimen>
   <dimen name="si_default_radius_max">18dp</dimen>
