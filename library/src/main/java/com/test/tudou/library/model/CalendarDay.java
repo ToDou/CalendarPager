@@ -72,6 +72,14 @@ public class CalendarDay {
     calendar.set(year, month, day);
   }
 
+  public int getDefaultMonth() {
+    return month;
+  }
+
+  public int getYear() {
+    return year;
+  }
+
   public int getMonth() {
     return month + 1;
   }

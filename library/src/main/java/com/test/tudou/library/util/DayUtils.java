@@ -30,6 +30,16 @@ public class DayUtils {
     return week;
   }
 
+  public static int calculateMonthCount(CalendarDay startDay, CalendarDay endDay) {
+    int monthCount = 0;
+    if (startDay.year == endDay.year) {
+      return endDay.month - startDay.month + 1;
+    } else if (startDay.year < endDay.year) {
+      return (endDay.year - startDay.year) * 12 + (12 - startDay.month) + endDay.month + 1;
+    }
+    return monthCount;
+  }
+
   public static CalendarDay calculateFirstShowDay(CalendarDay startDay) {
     int day = startDay.calendar.get(Calendar.DAY_OF_WEEK);
     Calendar calendar = Calendar.getInstance();

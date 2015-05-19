@@ -4,12 +4,12 @@
   android:layout_height="match_parent">
 
   <com.test.tudou.library.MonthSwitchPager.view.MonthSwitchTextView
-    android:id="@android:id/text1"
+    android:id="@android:id/text2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     />
 
-  <com.android.support.v7.widget.RecyclerView
+  <android.support.v7.widget.RecyclerView
     android:id="@android:id/content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
