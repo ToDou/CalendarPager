@@ -4,6 +4,7 @@
   android:orientation="vertical">
 
   <com.test.tudou.library.MonthSwitchPager.view.MonthSwitchPagerView
+    android:id="@+id/view_month"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
 

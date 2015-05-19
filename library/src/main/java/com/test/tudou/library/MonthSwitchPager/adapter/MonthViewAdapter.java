@@ -21,9 +21,11 @@ public class MonthViewAdapter extends RecyclerView.Adapter<MonthViewAdapter.Mont
   private CalendarDay mEndDay;
   private CalendarDay mSelectCalendarDay;
   private ArrayList<CalendarDay> mAbleCalendayDays;
+  private MonthView.OnDayClickListener mOnDayClickListener;
 
-  public MonthViewAdapter(Context context) {
+  public MonthViewAdapter(Context context, MonthView.OnDayClickListener onDayClickListener) {
     mContext = context;
+    mOnDayClickListener = onDayClickListener;
     mAbleCalendayDays = new ArrayList<>();
     mSelectCalendarDay = new CalendarDay(System.currentTimeMillis());
   }
@@ -47,8 +49,6 @@ public class MonthViewAdapter extends RecyclerView.Adapter<MonthViewAdapter.Mont
     return monthCount;
   }
 
-
-
   @Override
   public MonthViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
     MonthView monthView = new MonthView(mContext);
@@ -68,6 +68,7 @@ public class MonthViewAdapter extends RecyclerView.Adapter<MonthViewAdapter.Mont
 
   @Override public void onDayClick(CalendarDay calendarDay) {
     mSelectCalendarDay = calendarDay;
+    mOnDayClickListener.onDayClick(calendarDay);
     notifyDataSetChanged();
   }
 

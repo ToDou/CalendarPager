@@ -13,10 +13,12 @@ import com.test.tudou.library.model.CalendarDay;
 /**
  * Created by tudou on 15-5-18.
  */
-public class MonthSwitchPagerView extends LinearLayout {
+public class MonthSwitchPagerView extends LinearLayout implements MonthView.OnDayClickListener {
 
   @InjectView(android.R.id.text2) MonthSwitchTextView mSwitchText;
   @InjectView(android.R.id.content) MonthRecyclerView mRecyclerView;
+
+  private MonthView.OnDayClickListener mOnDayClickListener;
 
   private MonthViewAdapter mMonthAdapter;
 
@@ -38,11 +40,22 @@ public class MonthSwitchPagerView extends LinearLayout {
     LayoutInflater.from(context).inflate(R.layout.view_month_switch_container, this);
     ButterKnife.inject(this);
 
-    mMonthAdapter = new MonthViewAdapter(context);
-    mMonthAdapter.setData(new CalendarDay(2015, 5, 6), new CalendarDay(2017, 5, 5), null);
-    mSwitchText.setDay(new CalendarDay(2015, 5, 6), new CalendarDay(2017, 5, 5));
+    mMonthAdapter = new MonthViewAdapter(context, this);
     mSwitchText.setMonthRecyclerView(mRecyclerView);
     mRecyclerView.setMonthSwitchTextView(mSwitchText);
     mRecyclerView.setAdapter(mMonthAdapter);
+  }
+
+  public void setData(CalendarDay startDay, CalendarDay endDay) {
+    mMonthAdapter.setData(startDay, endDay, null);
+    mSwitchText.setDay(startDay, endDay);
+  }
+
+  public void setOnDayClickListener(MonthView.OnDayClickListener onDayClickListener) {
+    mOnDayClickListener = onDayClickListener;
+  }
+
+  @Override public void onDayClick(CalendarDay calendarDay) {
+    mOnDayClickListener.onDayClick(calendarDay);
   }
 }
