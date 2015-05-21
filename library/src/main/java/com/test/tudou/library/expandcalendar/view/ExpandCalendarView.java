@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ObjectAnimator;
 import com.test.tudou.library.R;
 import com.test.tudou.library.expandcalendar.adapter.MonthViewAdapter;
 import com.test.tudou.library.model.CalendarDay;
@@ -53,6 +56,7 @@ public class ExpandCalendarView extends LinearLayout implements ExpandCalendarMo
 
     mMonthAdapter = new MonthViewAdapter(context, this);
     mRecyclerView.setAdapter(mMonthAdapter);
+    mBtnView.setAlpha(0.01f);
 
     mBtnView.setOnTouchListener(new OnTouchListener() {
 
@@ -67,8 +71,10 @@ public class ExpandCalendarView extends LinearLayout implements ExpandCalendarMo
         switch (event.getAction()) {
           case MotionEvent.ACTION_DOWN: // 手指按下时候的位置
             startY = (int) event.getRawY();
+            ObjectAnimator.ofFloat(mBtnView, "alpha", 0.01f, 1.0f).start();
             break;
           case MotionEvent.ACTION_UP:
+            ObjectAnimator.ofFloat(mBtnView, "alpha", 1.0f, 0.01f).start();
             if (layoutParams.height - minHeight < MIN_OFFSET) {
               layoutParams.height = minHeight;
               mRecyclerView.getParent().requestLayout();
