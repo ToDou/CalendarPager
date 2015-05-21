@@ -29,6 +29,7 @@ public class MonthSwitchActivity extends ActionBarActivity implements MonthView.
   private void updateData() {
     mMonthPagerView.setData(new CalendarDay(2015, 5, 4), new CalendarDay(2020, 12, 2));
     mMonthPagerView.setOnDayClickListener(this);
+    mMonthPagerView.setSelectDay(new CalendarDay(2016, 10, 1));
   }
 
   @Override public void onDayClick(CalendarDay calendarDay) {

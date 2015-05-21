@@ -9,6 +9,7 @@ import butterknife.InjectView;
 import com.test.tudou.library.MonthSwitchPager.adapter.MonthViewAdapter;
 import com.test.tudou.library.R;
 import com.test.tudou.library.model.CalendarDay;
+import com.test.tudou.library.util.DayUtils;
 
 /**
  * Created by tudou on 15-5-18.
@@ -49,6 +50,11 @@ public class MonthSwitchPagerView extends LinearLayout implements MonthView.OnDa
   public void setData(CalendarDay startDay, CalendarDay endDay) {
     mMonthAdapter.setData(startDay, endDay, null);
     mSwitchText.setDay(startDay, endDay);
+  }
+
+  public void setSelectDay(CalendarDay calendarDay) {
+    mRecyclerView.scrollToPosition(DayUtils.calculateMonthPosition(mMonthAdapter.getStartDay(), calendarDay));
+    mMonthAdapter.setSelectDay(calendarDay);
   }
 
   public void setOnDayClickListener(MonthView.OnDayClickListener onDayClickListener) {

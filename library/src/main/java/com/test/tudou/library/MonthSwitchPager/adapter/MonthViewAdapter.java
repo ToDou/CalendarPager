@@ -9,6 +9,7 @@ import com.test.tudou.library.MonthSwitchPager.view.MonthView;
 import com.test.tudou.library.model.CalendarDay;
 import com.test.tudou.library.util.DayUtils;
 import java.util.ArrayList;
+import java.util.IllegalFormatException;
 
 /**
  * Created by tudou on 15-4-30.
@@ -37,6 +38,25 @@ public class MonthViewAdapter extends RecyclerView.Adapter<MonthViewAdapter.Mont
       mAbleCalendayDays.clear();
       mAbleCalendayDays.addAll(calendarDayArrayList);
     }
+    notifyDataSetChanged();
+  }
+
+  public CalendarDay getStartDay() {
+    if (mStartDay == null) {
+      try {
+        throw new Exception("The StartDay must initial before the select Day!");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    } else {
+      return mStartDay;
+    }
+    return null;
+  }
+
+  public void setSelectDay(CalendarDay calendarDay) {
+    if (calendarDay == null) return;
+    mSelectCalendarDay = calendarDay;
     notifyDataSetChanged();
   }
 

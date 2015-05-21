@@ -40,6 +40,15 @@ public class DayUtils {
     return monthCount;
   }
 
+  public static int calculateMonthPosition(CalendarDay startDay, CalendarDay positionDay) {
+    if (startDay.year == positionDay.year) {
+      return positionDay.month - positionDay.month;
+    } else if (startDay.year < positionDay.year) {
+      return (positionDay.year - startDay.year - 1) * 12 + (12 - startDay.month) + positionDay.month;
+    }
+    return 0;
+  }
+
   public static CalendarDay calculateFirstShowDay(CalendarDay startDay) {
     int day = startDay.calendar.get(Calendar.DAY_OF_WEEK);
     Calendar calendar = Calendar.getInstance();
