@@ -6,7 +6,7 @@
   android:background="@android:color/white"
   android:gravity="center_vertical">
 
-  <com.test.tudou.library.MonthSwitchPager.view.ForegroundImageView
+  <com.test.tudou.library.monthswitchpager.view.ForegroundImageView
     android:id="@android:id/icon1"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
@@ -27,7 +27,7 @@
     android:textColor="@color/text_color_dark"
     />
 
-  <com.test.tudou.library.MonthSwitchPager.view.ForegroundImageView
+  <com.test.tudou.library.monthswitchpager.view.ForegroundImageView
     android:id="@android:id/icon2"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"

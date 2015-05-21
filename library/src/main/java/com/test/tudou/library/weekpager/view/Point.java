@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.test.tudou.library.WeekPager.view;
+package com.test.tudou.library.weekpager.view;
 
 /**
  * Created by chenupt@gmail.com on 2015/1/31.

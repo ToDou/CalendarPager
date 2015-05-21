@@ -1,4 +1,4 @@
-package com.test.tudou.library.WeekPager.view;
+package com.test.tudou.library.expandcalendar.view;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,28 +9,29 @@ import android.view.View;
 /**
  * Created by tudou on 15-5-3.
  */
-public class WeekRecyclerView extends RecyclerView {
+public class ExpandMonthRecyclerView extends RecyclerView {
 
   public static int LIST_LEFT_OFFSET = -1;
+  private LinearLayoutManager mManager;
 
-  public WeekRecyclerView(Context context) {
+  public ExpandMonthRecyclerView(Context context) {
     this(context, null);
   }
 
-  public WeekRecyclerView(Context context, AttributeSet attrs) {
+  public ExpandMonthRecyclerView(Context context, AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public WeekRecyclerView(Context context, AttributeSet attrs, int defStyle) {
+  public ExpandMonthRecyclerView(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
 
     initData();
   }
 
   private void initData() {
-    LinearLayoutManager manager = new LinearLayoutManager(getContext());
-    manager.setOrientation(LinearLayoutManager.HORIZONTAL);
-    setLayoutManager(manager);
+    mManager = new LinearLayoutManager(getContext());
+    mManager.setOrientation(LinearLayoutManager.VERTICAL);
+    setLayoutManager(mManager);
 
     setOnScrollListener(new OnScrollListener() {
       @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -40,6 +41,7 @@ public class WeekRecyclerView extends RecyclerView {
 
       @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
+
       }
     });
   }

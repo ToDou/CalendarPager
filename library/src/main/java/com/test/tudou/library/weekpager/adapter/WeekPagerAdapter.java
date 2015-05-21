@@ -2,7 +2,7 @@
  * Created by YuGang Yang on April 01, 2015.
  * Copyright 2007-2015 Laputapp.com. All rights reserved.
  */
-package com.test.tudou.library.WeekPager.adapter;
+package com.test.tudou.library.weekpager.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

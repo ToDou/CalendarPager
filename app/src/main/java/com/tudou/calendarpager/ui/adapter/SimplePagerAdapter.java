@@ -6,7 +6,7 @@ package com.tudou.calendarpager.ui.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import com.test.tudou.library.WeekPager.adapter.WeekPagerAdapter;
+import com.test.tudou.library.weekpager.adapter.WeekPagerAdapter;
 import com.tudou.calendarpager.ui.fragment.SimpleFragment;
 
 public class SimplePagerAdapter extends WeekPagerAdapter {

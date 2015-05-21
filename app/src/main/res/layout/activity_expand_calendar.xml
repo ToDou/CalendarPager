@@ -3,8 +3,8 @@
   android:layout_height="match_parent"
   android:orientation="vertical">
 
-  <com.test.tudou.library.monthswitchpager.view.MonthSwitchView
-    android:id="@+id/view_month"
+  <com.test.tudou.library.expandcalendar.view.ExpandCalendarView
+    android:id="@+id/view_calendar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
 

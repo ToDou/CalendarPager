@@ -1,4 +1,4 @@
-package com.test.tudou.library.MonthSwitchPager.view;
+package com.test.tudou.library.expandcalendar.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -18,8 +18,7 @@ import java.util.Calendar;
 /**
  * Created by tudou on 15-5-18.
  */
-public class MonthView extends View {
-  private final static String TAG = "MonthView";
+public class ExpandCalendarMonthView extends View {
   private final static int DAY_IN_WEEK = 7;
   private final static float DAY_IN_MONTH_PADDING_VERTICAL = 6.0f;
   private final static int DEFAULT_HEIGHT = 32;
@@ -42,15 +41,15 @@ public class MonthView extends View {
   private OnDayClickListener mOnDayClickListener;
 
 
-  public MonthView(Context context) {
+  public ExpandCalendarMonthView(Context context) {
     this(context, null);
   }
 
-  public MonthView(Context context, AttributeSet attrs) {
+  public ExpandCalendarMonthView(Context context, AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public MonthView(Context context, AttributeSet attrs, int defStyleAttr) {
+  public ExpandCalendarMonthView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     initData();
     initPaint();
@@ -99,12 +98,12 @@ public class MonthView extends View {
     calendar.add(Calendar.MONTH, mMonthPosition);
     int year = calendar.get(Calendar.YEAR);
     int month = calendar.get(Calendar.MONTH);
-    Log.e(TAG, month + " yue " + year);
     int daysNum = DayUtils.getDaysInMonth(month, year);
     for (int i = 0; i < daysNum; i++) {
       mDays.add(new CalendarDay(calendar));
       calendar.roll(Calendar.DAY_OF_MONTH, 1);
     }
+    calculateRowNum();
   }
 
   @Override protected void onDraw(Canvas canvas) {
@@ -113,8 +112,26 @@ public class MonthView extends View {
       return;
     }
     rowNum = 0;
+    drawYearMonthLable(canvas);
     drawWeekLable(canvas);
     drawMonthNum(canvas);
+  }
+
+  private void drawYearMonthLable(Canvas canvas) {
+    CalendarDay calendarDay = mDays.get(0);
+    int flags =
+        DateUtils.FORMAT_NO_MONTH_DAY + DateUtils.FORMAT_SHOW_DATE + DateUtils.FORMAT_SHOW_YEAR;
+    String content = DateUtils.formatDateTime(getContext(), calendarDay.getTime(), flags);
+    Paint.FontMetrics fontMetrics = mPaintNormal.getFontMetrics();
+    float fontHeight = fontMetrics.bottom - fontMetrics.top;
+    float textWidth = mPaintNormal.measureText(content);
+    float parentWidth =
+        getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
+    float y = mRowHeight * rowNum + mRowHeight - (mRowHeight - fontHeight) / 2 - fontMetrics.bottom;
+    float x = getResources().getDimension(R.dimen.activity_horizontal_margin) + parentWidth / 2 - textWidth / 2;
+    mPaintNormal.setColor(mTextNormalColor);
+    canvas.drawText(content, x, y, mPaintNormal);
+    rowNum++;
   }
 
   private void drawWeekLable(Canvas canvas) {
@@ -170,7 +187,8 @@ public class MonthView extends View {
   }
 
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    setMeasuredDimension(View.MeasureSpec.getSize(widthMeasureSpec), mRowHeight * mNumRows + mRowHeight / 2);
+    setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec),
+        mRowHeight * mNumRows + mRowHeight / 2);
   }
 
   public boolean onTouchEvent(MotionEvent event) {
@@ -183,6 +201,21 @@ public class MonthView extends View {
     return true;
   }
 
+  private void calculateRowNum() {
+    mNumRows = 0;
+    int row = 2;
+    for (int i = 0; i < mDays.size(); i++) {
+      CalendarDay calendarDay = mDays.get(i);
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTimeInMillis(calendarDay.getTime());
+      int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+      if (weekDay == 7) row++;
+      if (i == mDays.size() - 1) {
+        mNumRows = row + 1;
+      }
+    }
+  }
+
   public CalendarDay getDayFromLocation(float x, float y) {
     int padding = getContext().getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
     if (x < padding) {
@@ -193,11 +226,11 @@ public class MonthView extends View {
       return null;
     }
 
-    if (y < mRowHeight || y > (rowNum + 1) * mRowHeight) {
+    if (y < mRowHeight * 2 || y > (rowNum + 1) * mRowHeight) {
       return null;
     }
 
-    int yDay = (int) (y - mRowHeight) / mRowHeight;
+    int yDay = (int) (y - mRowHeight * 2) / mRowHeight;
 
     int xday = (int) ((x - padding) / ((getWidth() - padding * 2) / DAY_IN_WEEK));
 

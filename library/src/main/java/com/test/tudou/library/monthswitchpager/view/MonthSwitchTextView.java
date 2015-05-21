@@ -1,4 +1,4 @@
-package com.test.tudou.library.MonthSwitchPager.view;
+package com.test.tudou.library.monthswitchpager.view;
 
 import android.content.Context;
 import android.text.format.DateUtils;

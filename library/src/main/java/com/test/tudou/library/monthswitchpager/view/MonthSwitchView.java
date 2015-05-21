@@ -1,4 +1,4 @@
-package com.test.tudou.library.MonthSwitchPager.view;
+package com.test.tudou.library.monthswitchpager.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.test.tudou.library.MonthSwitchPager.adapter.MonthViewAdapter;
+import com.test.tudou.library.monthswitchpager.adapter.MonthViewAdapter;
 import com.test.tudou.library.R;
 import com.test.tudou.library.model.CalendarDay;
 import com.test.tudou.library.util.DayUtils;

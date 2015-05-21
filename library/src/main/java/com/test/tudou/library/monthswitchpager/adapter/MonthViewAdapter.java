@@ -1,15 +1,14 @@
-package com.test.tudou.library.MonthSwitchPager.adapter;
+package com.test.tudou.library.monthswitchpager.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import com.test.tudou.library.MonthSwitchPager.view.MonthView;
+import com.test.tudou.library.monthswitchpager.view.MonthView;
 import com.test.tudou.library.model.CalendarDay;
 import com.test.tudou.library.util.DayUtils;
 import java.util.ArrayList;
-import java.util.IllegalFormatException;
 
 /**
  * Created by tudou on 15-4-30.

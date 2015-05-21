@@ -5,22 +5,22 @@ import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.test.tudou.library.monthswitchpager.view.MonthSwitchView;
-import com.test.tudou.library.monthswitchpager.view.MonthView;
+import com.test.tudou.library.expandcalendar.view.ExpandCalendarView;
+import com.test.tudou.library.expandcalendar.view.ExpandCalendarMonthView;
 import com.test.tudou.library.model.CalendarDay;
 import com.tudou.calendarpager.R;
 
 /**
  * Created by tudou on 15-5-19.
  */
-public class MonthSwitchActivity extends ActionBarActivity implements MonthView.OnDayClickListener {
+public class ExpandCalendarActivity extends ActionBarActivity implements ExpandCalendarMonthView.OnDayClickListener {
 
-  @InjectView(R.id.view_month) MonthSwitchView mMonthPagerView;
+  @InjectView(R.id.view_calendar) ExpandCalendarView mMonthPagerView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_month_switch);
+    setContentView(R.layout.activity_expand_calendar);
     ButterKnife.inject(this);
 
     updateData();

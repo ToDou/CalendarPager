@@ -2,7 +2,7 @@
  * Created by YuGang Yang on April 08, 2015.
  * Copyright 2007-2015 Laputapp.com. All rights reserved.
  */
-package com.test.tudou.library.MonthSwitchPager.view;
+package com.test.tudou.library.monthswitchpager.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

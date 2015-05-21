@@ -1,4 +1,4 @@
-package com.test.tudou.library.WeekPager.adapter;
+package com.test.tudou.library.weekpager.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.test.tudou.library.R;
-import com.test.tudou.library.WeekPager.view.WeekDayViewPager;
-import com.test.tudou.library.WeekPager.view.WeekView;
+import com.test.tudou.library.weekpager.view.WeekDayViewPager;
+import com.test.tudou.library.weekpager.view.WeekView;
 import com.test.tudou.library.model.CalendarDay;
 import com.test.tudou.library.util.DayUtils;
 import java.util.ArrayList;

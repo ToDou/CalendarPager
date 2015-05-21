@@ -6,7 +6,7 @@
 
   <include layout="@layout/view_week_label"/>
 
-  <com.test.tudou.library.WeekPager.view.WeekRecyclerView
+  <com.test.tudou.library.weekpager.view.WeekRecyclerView
     android:id="@+id/header_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="48dp"
@@ -22,7 +22,7 @@
     android:layout_gravity="center_horizontal"
     />
 
-  <com.test.tudou.library.WeekPager.view.WeekDayViewPager
+  <com.test.tudou.library.weekpager.view.WeekDayViewPager
     android:id="@+id/view_pager"
     android:layout_width="match_parent"
     android:layout_height="0dp"

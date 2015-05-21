@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".ui.activity.MonthSwitchActivity"/>
         <activity android:name=".ui.activity.WeekPagerActivity"/>
+        <activity android:name=".ui.activity.ExpandCalendarActivity"/>
     </application>
 
 </manifest>

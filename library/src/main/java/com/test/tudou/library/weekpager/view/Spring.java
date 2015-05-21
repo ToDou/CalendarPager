@@ -1,4 +1,4 @@
-package com.test.tudou.library.WeekPager.view;
+package com.test.tudou.library.weekpager.view;
 import android.graphics.Paint;
 import android.graphics.Path;
 

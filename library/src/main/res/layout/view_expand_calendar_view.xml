@@ -3,16 +3,10 @@
   android:orientation="vertical" android:layout_width="match_parent"
   android:layout_height="wrap_content">
 
-  <com.test.tudou.library.monthswitchpager.view.MonthSwitchTextView
-    android:id="@android:id/text2"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    />
-
-  <com.test.tudou.library.monthswitchpager.view.MonthRecyclerView
+  <com.test.tudou.library.expandcalendar.view.ExpandMonthRecyclerView
     android:id="@android:id/content"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/default_month_view_height"
+    android:layout_height="@dimen/default_expand_view_height"
     android:background="@android:color/white"
     />
 
