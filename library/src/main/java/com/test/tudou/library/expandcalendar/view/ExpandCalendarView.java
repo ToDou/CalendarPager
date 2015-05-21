@@ -3,6 +3,7 @@ package com.test.tudou.library.expandcalendar.view;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,7 +21,10 @@ import com.test.tudou.library.util.DayUtils;
  */
 public class ExpandCalendarView extends LinearLayout implements ExpandCalendarMonthView.OnDayClickListener {
 
-  private final static int MOVE_OFFSET = 40;
+  private final static String TAG = "ExpandCalendarView";
+
+  private final static int MIN_OFFSET = 80;
+  private final static int MAX_OFFSET = 200;
 
   @InjectView(android.R.id.content) ExpandMonthRecyclerView mRecyclerView;
   @InjectView(android.R.id.button1) View mBtnView;
@@ -65,40 +69,12 @@ public class ExpandCalendarView extends LinearLayout implements ExpandCalendarMo
             startY = (int) event.getRawY();
             break;
           case MotionEvent.ACTION_UP:
-            if (layoutParams.height - minHeight < MOVE_OFFSET) {
-              final int h = layoutParams.height - minHeight;
-              new CountDownTimer(2000, 50) {
-                @Override public void onTick(long millisUntilFinished) {
-                  layoutParams.height -= h * 50 / 2000;
-                  if (layoutParams.height < minHeight) {
-                    layoutParams.height = minHeight;
-                    mRecyclerView.getParent().requestLayout();
-                    return;
-                  }
-                  mRecyclerView.getParent().requestLayout();
-                }
-
-                @Override public void onFinish() {
-
-                }
-              }.start();
-            } else if (maxHeight - layoutParams.height < MOVE_OFFSET) {
-              final int h = maxHeight - layoutParams.height;
-              new CountDownTimer(2000, 50) {
-                @Override public void onTick(long millisUntilFinished) {
-                  layoutParams.height += h * 50 / 2000;
-                  if (layoutParams.height > maxHeight) {
-                    layoutParams.height = maxHeight;
-                    mRecyclerView.getParent().requestLayout();
-                    return;
-                  }
-                  mRecyclerView.getParent().requestLayout();
-                }
-
-                @Override public void onFinish() {
-
-                }
-              }.start();
+            if (layoutParams.height - minHeight < MIN_OFFSET) {
+              layoutParams.height = minHeight;
+              mRecyclerView.getParent().requestLayout();
+            } else if (maxHeight - layoutParams.height < MAX_OFFSET) {
+              layoutParams.height = maxHeight;
+              mRecyclerView.getParent().requestLayout();
             }
             break;
           case MotionEvent.ACTION_MOVE: // 触屏移动
