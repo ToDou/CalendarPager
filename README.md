@@ -27,7 +27,8 @@ dependencies {
 Just Do
 ====
 
-* WeekRecyclerView
+WeekRecyclerView
+=====
 
 First you should add the layout WeekRecyclerView and WeekDayViewPager. @layout/view_week_label and text_day_label can add by yourself.
 ```xml
@@ -108,7 +109,8 @@ If you want one color to distinguish some days. You can add reachAbleDays. And s
     
 ```
 
-* MonthSwitchView
+MonthSwitchView
+=====
 
 Ok!Add layout first.
 ```xml
