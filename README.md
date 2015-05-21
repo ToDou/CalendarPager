@@ -7,7 +7,14 @@ Maybe not perfect. I will thanks for your suggestion.
 
 Screeshot
 ====
+
+* WeekRecyclerView
+
 ![](/screenshot.gif)
+
+* MonthSwitchView
+
+![](/screenshot_switch.gif)
 
 Installation
 ====
@@ -19,6 +26,9 @@ dependencies {
 
 Just Do
 ====
+
+* WeekRecyclerView
+
 First you should add the layout WeekRecyclerView and WeekDayViewPager. @layout/view_week_label and text_day_label can add by yourself.
 ```xml
   <include layout="@layout/view_week_label"/>
@@ -95,6 +105,31 @@ If you want one color to distinguish some days. You can add reachAbleDays. And s
     ...
     mWeekViewAdapter.setData(reachAbleDays.get(0), reachAbleDays.get(reachAbleDays.size() - 1), reachAbleDays);
     ...
+    
+```
+
+* MonthSwitchView
+
+Ok!Add layout first.
+```xml
+  <com.test.tudou.library.MonthSwitchPager.view.MonthSwitchView
+    android:id="@+id/view_month"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+    
+```
+Then initial the data, Pay attention to the selectday must set after initial the startday and endday.
+```java
+    mMonthPagerView.setData(new CalendarDay(2015, 5, 4), new CalendarDay(2020, 12, 2));
+    mMonthPagerView.setOnDayClickListener(this);
+    mMonthPagerView.setSelectDay(new CalendarDay(2016, 10, 1));
+    
+```
+Finally, your activity can Implements MonthView.OnDayClickListener to get the click event.
+```java
+    @Override public void onDayClick(CalendarDay calendarDay) {
+        Toast.makeText(this, calendarDay.getDayString(), Toast.LENGTH_SHORT).show();
+    }
     
 ```
 
