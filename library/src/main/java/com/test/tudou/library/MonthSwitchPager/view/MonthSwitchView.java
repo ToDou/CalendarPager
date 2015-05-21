@@ -14,7 +14,7 @@ import com.test.tudou.library.util.DayUtils;
 /**
  * Created by tudou on 15-5-18.
  */
-public class MonthSwitchPagerView extends LinearLayout implements MonthView.OnDayClickListener {
+public class MonthSwitchView extends LinearLayout implements MonthView.OnDayClickListener {
 
   @InjectView(android.R.id.text2) MonthSwitchTextView mSwitchText;
   @InjectView(android.R.id.content) MonthRecyclerView mRecyclerView;
@@ -23,15 +23,15 @@ public class MonthSwitchPagerView extends LinearLayout implements MonthView.OnDa
 
   private MonthViewAdapter mMonthAdapter;
 
-  public MonthSwitchPagerView(Context context) {
+  public MonthSwitchView(Context context) {
     this(context, null);
   }
 
-  public MonthSwitchPagerView(Context context, AttributeSet attrs) {
+  public MonthSwitchView(Context context, AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public MonthSwitchPagerView(Context context, AttributeSet attrs, int defStyleAttr) {
+  public MonthSwitchView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
     initialize(context, attrs, defStyleAttr);

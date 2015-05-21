@@ -5,7 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.test.tudou.library.MonthSwitchPager.view.MonthSwitchPagerView;
+import com.test.tudou.library.MonthSwitchPager.view.MonthSwitchView;
 import com.test.tudou.library.MonthSwitchPager.view.MonthView;
 import com.test.tudou.library.model.CalendarDay;
 import com.tudou.calendarpager.R;
@@ -15,7 +15,7 @@ import com.tudou.calendarpager.R;
  */
 public class MonthSwitchActivity extends ActionBarActivity implements MonthView.OnDayClickListener {
 
-  @InjectView(R.id.view_month) MonthSwitchPagerView mMonthPagerView;
+  @InjectView(R.id.view_month) MonthSwitchView mMonthPagerView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
