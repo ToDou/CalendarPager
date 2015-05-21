@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical" android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
   android:layout_height="wrap_content">
 
   <com.test.tudou.library.expandcalendar.view.ExpandMonthRecyclerView
     android:id="@android:id/content"
     android:layout_width="match_parent"
     android:layout_height="@dimen/default_expand_view_height"
+    android:layout_marginBottom="30dp"
     android:background="@android:color/white"
     />
 
-</LinearLayout>
+  <View
+    android:id="@android:id/button1"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_gravity="bottom"
+    />
+</FrameLayout>

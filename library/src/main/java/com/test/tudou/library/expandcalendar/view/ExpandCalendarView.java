@@ -3,6 +3,9 @@ package com.test.tudou.library.expandcalendar.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -17,6 +20,7 @@ import com.test.tudou.library.util.DayUtils;
 public class ExpandCalendarView extends LinearLayout implements ExpandCalendarMonthView.OnDayClickListener {
 
   @InjectView(android.R.id.content) ExpandMonthRecyclerView mRecyclerView;
+  @InjectView(android.R.id.button1) View mBtnView;
 
   private ExpandCalendarMonthView.OnDayClickListener mOnDayClickListener;
 
@@ -42,6 +46,32 @@ public class ExpandCalendarView extends LinearLayout implements ExpandCalendarMo
 
     mMonthAdapter = new MonthViewAdapter(context, this);
     mRecyclerView.setAdapter(mMonthAdapter);
+
+    mBtnView.setOnTouchListener(new OnTouchListener() {
+
+      int startY;
+
+      @Override public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+          case MotionEvent.ACTION_DOWN: // 手指按下时候的位置
+            startY = (int) event.getRawY();
+            break;
+          case MotionEvent.ACTION_UP:
+
+            break;
+          case MotionEvent.ACTION_MOVE: // 触屏移动
+            int y = (int) event.getRawY();
+            int dy = y - startY;
+            ViewGroup.LayoutParams layoutParams = mRecyclerView.getLayoutParams();
+            layoutParams.height += dy;
+            startY += dy;
+            mRecyclerView.getParent().requestLayout();
+          default:
+            break;
+        }
+        return true;
+      }
+    });
   }
 
   public void setData(CalendarDay startDay, CalendarDay endDay) {
