@@ -18,6 +18,7 @@ import com.test.tudou.library.R;
 import com.test.tudou.library.expandcalendar.adapter.MonthViewAdapter;
 import com.test.tudou.library.model.CalendarDay;
 import com.test.tudou.library.util.DayUtils;
+import com.test.tudou.library.util.UiUtils;
 
 /**
  * Created by tudou on 15-5-18.
@@ -28,6 +29,9 @@ public class ExpandCalendarView extends LinearLayout implements ExpandCalendarMo
 
   private final static int MIN_OFFSET = 80;
   private final static int MAX_OFFSET = 200;
+
+  private int minHeight;
+  private int maxHeight;
 
   @InjectView(android.R.id.content) ExpandMonthRecyclerView mRecyclerView;
   @InjectView(android.R.id.button1) View mBtnView;
@@ -57,17 +61,16 @@ public class ExpandCalendarView extends LinearLayout implements ExpandCalendarMo
     mMonthAdapter = new MonthViewAdapter(context, this);
     mRecyclerView.setAdapter(mMonthAdapter);
     mBtnView.setAlpha(0.01f);
+    minHeight = (int) UiUtils.calculateExpandMinHeight(getResources().getDimension(R.dimen.si_default_text_size), getResources().getDimensionPixelSize(R.dimen.default_month_row_height));
+    maxHeight = getResources().getDimensionPixelSize(R.dimen.default_expand_view_max_height);
 
+    updateRecyclerHeight();
     mBtnView.setOnTouchListener(new OnTouchListener() {
 
       int startY;
-      private int maxHeight;
-      private int minHeight;
 
       @Override public boolean onTouch(View v, MotionEvent event) {
         final ViewGroup.LayoutParams layoutParams = mRecyclerView.getLayoutParams();
-        minHeight = v.getResources().getDimensionPixelSize(R.dimen.default_expand_view_min_height);
-        maxHeight = v.getResources().getDimensionPixelSize(R.dimen.default_expand_view_max_height);
         switch (event.getAction()) {
           case MotionEvent.ACTION_DOWN: // 手指按下时候的位置
             startY = (int) event.getRawY();
@@ -78,10 +81,12 @@ public class ExpandCalendarView extends LinearLayout implements ExpandCalendarMo
             if (layoutParams.height - minHeight < MIN_OFFSET) {
               layoutParams.height = minHeight;
               mRecyclerView.getParent().requestLayout();
+              adjustSelectPosition();
             } else if (maxHeight - layoutParams.height < MAX_OFFSET) {
               layoutParams.height = maxHeight;
               mRecyclerView.getParent().requestLayout();
             }
+
             break;
           case MotionEvent.ACTION_MOVE: // 触屏移动
             int y = (int) event.getRawY();
@@ -101,6 +106,15 @@ public class ExpandCalendarView extends LinearLayout implements ExpandCalendarMo
         return true;
       }
     });
+  }
+
+  private void updateRecyclerHeight() {
+    ViewGroup.LayoutParams layoutParams = mRecyclerView.getLayoutParams();
+    layoutParams.height = minHeight;
+  }
+
+  private void adjustSelectPosition() {
+    mRecyclerView.scrollToSelectRow(mMonthAdapter.getStartDay(), mMonthAdapter.getSelectDay());
   }
 
   public void setData(CalendarDay startDay, CalendarDay endDay) {

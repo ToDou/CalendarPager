@@ -21,12 +21,14 @@ public class ExpandCalendarMonthView extends View {
   private final static int DAY_IN_WEEK = 7;
   private final static float DAY_IN_MONTH_PADDING_VERTICAL = 6.0f;
   private final static int DEFAULT_HEIGHT = 32;
-  protected static final int DEFAULT_NUM_ROWS = 7;
+  protected static final int DEFAULT_NUM_ROWS = 6;
 
   private ArrayList<CalendarDay> mDays;
   private CalendarDay mFirstDay;
   private CalendarDay mSelectDay;
   private int mMonthPosition;
+
+  private int mSelectDayRowNum;
 
   private Paint mPaintNormal;
   private Paint mPaintSelect;
@@ -36,6 +38,7 @@ public class ExpandCalendarMonthView extends View {
   protected int mRowHeight = DEFAULT_HEIGHT;
   private int mNumRows = DEFAULT_NUM_ROWS;
   private int rowNum;
+  private int labelRowNum;
 
   private OnDayClickListener mOnDayClickListener;
 
@@ -111,8 +114,8 @@ public class ExpandCalendarMonthView extends View {
       return;
     }
     rowNum = 0;
+    labelRowNum = 0;
     drawYearMonthLable(canvas);
-    drawWeekLable(canvas);
     drawMonthNum(canvas);
   }
 
@@ -131,25 +134,7 @@ public class ExpandCalendarMonthView extends View {
     mPaintNormal.setColor(mTextNormalColor);
     canvas.drawText(content, x, y, mPaintNormal);
     rowNum++;
-  }
-
-  private void drawWeekLable(Canvas canvas) {
-    String[] weeks = DateFormatSymbols.getInstance().getShortWeekdays();
-    for (int i = 0; i < weeks.length; i++) {
-
-      String content = String.valueOf(weeks[i]);
-      Paint.FontMetrics fontMetrics = mPaintNormal.getFontMetrics();
-      float fontHeight = fontMetrics.bottom - fontMetrics.top;
-      float textWidth = mPaintNormal.measureText(content);
-      float parentWidth = getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
-      float y = mRowHeight  * rowNum + mRowHeight - (mRowHeight - fontHeight) / 2 - fontMetrics.bottom;
-      float x = getResources().getDimension(R.dimen.activity_horizontal_margin)
-          + parentWidth / DAY_IN_WEEK * (i - 1)
-          + parentWidth / DAY_IN_WEEK / 2 - textWidth / 2;
-      mPaintNormal.setColor(mTextNormalColor);
-      canvas.drawText(content, x, y, mPaintNormal);
-    }
-    rowNum++;
+    labelRowNum ++;
   }
 
   private void drawMonthNum(Canvas canvas) {
@@ -168,8 +153,8 @@ public class ExpandCalendarMonthView extends View {
           + parentWidth / DAY_IN_WEEK * (weekDay - 1)
           + parentWidth / DAY_IN_WEEK / 2 - textWidth / 2;
 
-      //Log.e(TAG, "i :  " + i + "   weekday: " + weekDay + "      rownum: " + rowNum + "   y: " + y);
       if (mSelectDay.getDayString().equals(calendarDay.getDayString())) {
+        mSelectDayRowNum = rowNum;
         canvas.drawCircle(getResources().getDimension(R.dimen.activity_horizontal_margin)
                 + parentWidth / DAY_IN_WEEK * (weekDay - 1)
                 + parentWidth / DAY_IN_WEEK / 2, mRowHeight  * rowNum + mRowHeight / 2, mRowHeight * 2 / 4, mPaintSelect
@@ -202,7 +187,7 @@ public class ExpandCalendarMonthView extends View {
 
   private void calculateRowNum() {
     mNumRows = 0;
-    int row = 2;
+    int row = 1;
     for (int i = 0; i < mDays.size(); i++) {
       CalendarDay calendarDay = mDays.get(i);
       Calendar calendar = Calendar.getInstance();
@@ -225,11 +210,11 @@ public class ExpandCalendarMonthView extends View {
       return null;
     }
 
-    if (y < mRowHeight * 2 || y > (rowNum + 1) * mRowHeight) {
+    if (y < mRowHeight * labelRowNum || y > (rowNum + 1) * mRowHeight) {
       return null;
     }
 
-    int yDay = (int) (y - mRowHeight * 2) / mRowHeight;
+    int yDay = (int) (y - mRowHeight * labelRowNum) / mRowHeight;
 
     int xday = (int) ((x - padding) / ((getWidth() - padding * 2) / DAY_IN_WEEK));
 
@@ -244,6 +229,10 @@ public class ExpandCalendarMonthView extends View {
     position = position - calendar.get(Calendar.DAY_OF_WEEK) + 1;
     if (position < 0 || position > mDays.size() - 1) return null;
     return mDays.get(position);
+  }
+
+  public int getSelectDayRowNum() {
+    return mSelectDayRowNum;
   }
 
   public void setOnDayClickListener(OnDayClickListener onDayClickListener) {

@@ -1,10 +1,17 @@
 package com.test.tudou.library.expandcalendar.view;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+import com.test.tudou.library.R;
+import com.test.tudou.library.model.CalendarDay;
+import com.test.tudou.library.util.DayUtils;
+import com.test.tudou.library.util.DisplayUtil;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by tudou on 15-5-3.
@@ -41,7 +48,6 @@ public class ExpandMonthRecyclerView extends RecyclerView {
 
       @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
-
       }
     });
   }
@@ -68,6 +74,53 @@ public class ExpandMonthRecyclerView extends RecyclerView {
         }
       }
     }
+  }
+
+  public void scrollToSelectRow(CalendarDay firstDay, CalendarDay selectDay) {
+    int position = DayUtils.calculateMonthPosition(firstDay, selectDay);
+    //scrollToPosition(position);
+    int rowNum = 0;
+    int selectDayRowNum = 0;
+    ArrayList<CalendarDay> mDays = createDays(position, firstDay);
+    //int height = rowNum *
+    int rowHeight = getResources().getDimensionPixelSize(R.dimen.default_month_row_height);
+    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    paint.setTextSize(getResources().getDimension(R.dimen.si_default_text_size));
+    Paint.FontMetrics fontMetrics = paint.getFontMetrics();
+
+    float fontHeight = fontMetrics.bottom - fontMetrics.top;
+    float y = 0;
+    for (int i = 0; i < mDays.size(); i++) {
+      CalendarDay calendarDay = mDays.get(i);
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTimeInMillis(calendarDay.getTime());
+      int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+      if (selectDay.getDayString().equals(calendarDay.getDayString())) {
+        selectDayRowNum = rowNum;
+        y = rowHeight  * (rowNum - 1) + rowHeight - (rowHeight - fontHeight) / 2;
+      }
+      if (weekDay == 7) rowNum++;
+    }
+
+    int height = DisplayUtil.px2dip(getContext(), y);
+    mManager.scrollToPositionWithOffset(position, -height);
+  }
+
+  private ArrayList<CalendarDay> createDays(int monthPosition, CalendarDay firstDay) {
+    ArrayList<CalendarDay> mDays = new ArrayList<>();
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(firstDay.getTime());
+    int position = calendar.get(Calendar.DAY_OF_MONTH);
+    calendar.roll(Calendar.DAY_OF_MONTH, -(position - 1));
+    calendar.add(Calendar.MONTH, monthPosition);
+    int year = calendar.get(Calendar.YEAR);
+    int month = calendar.get(Calendar.MONTH);
+    int daysNum = DayUtils.getDaysInMonth(month, year);
+    for (int i = 0; i < daysNum; i++) {
+      mDays.add(new CalendarDay(calendar));
+      calendar.roll(Calendar.DAY_OF_MONTH, 1);
+    }
+    return mDays;
   }
 
 }

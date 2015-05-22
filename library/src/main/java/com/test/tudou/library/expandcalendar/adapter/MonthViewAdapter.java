@@ -59,6 +59,10 @@ public class MonthViewAdapter extends RecyclerView.Adapter<MonthViewAdapter.Mont
     notifyDataSetChanged();
   }
 
+  public CalendarDay getSelectDay() {
+    return mSelectCalendarDay;
+  }
+
   @Override
   public int getItemCount() {
     if (mStartDay == null || mEndDay == null) {

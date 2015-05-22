@@ -3,13 +3,25 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
 
-  <com.test.tudou.library.expandcalendar.view.ExpandMonthRecyclerView
-    android:id="@android:id/content"
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="@dimen/default_expand_view_min_height"
-    android:layout_marginBottom="10dp"
-    android:background="@android:color/white"
-    />
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.test.tudou.library.expandcalendar.view.WeekLabelView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@android:color/white"/>
+
+    <com.test.tudou.library.expandcalendar.view.ExpandMonthRecyclerView
+      android:id="@android:id/content"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/default_expand_view_min_height"
+      android:layout_marginBottom="10dp"
+      android:background="@android:color/white"
+      />
+
+  </LinearLayout>
 
   <View
     android:id="@android:id/button1"
