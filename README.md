@@ -97,9 +97,16 @@ Last you can load the data.
     reachAbleDays.add(new CalendarDay(2015, 5, 20));
     mWeekViewAdapter.setData(reachAbleDays.get(0), reachAbleDays.get(reachAbleDays.size() - 1), null);
     mPagerAdapter.setData(reachAbleDays.get(0), reachAbleDays.get(reachAbleDays.size() - 1));
+    mViewPagerContent.setCurrentPosition(DayUtils.calculateDayPosition(mWeekViewAdapter.getFirstShowDay(), new CalendarDay(2015, 5, 6)));
   }
     
 ```
+You can use 
+```java
+    mViewPagerContent.setCurrentPosition(position);
+```
+to change the current pager
+
 If you want one color to distinguish some days. You can add reachAbleDays. And set the color by setTextUnableColor
 ```java
     ...
