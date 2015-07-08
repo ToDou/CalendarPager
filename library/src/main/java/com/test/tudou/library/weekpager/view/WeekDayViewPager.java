@@ -1,16 +1,20 @@
 package com.test.tudou.library.weekpager.view;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import com.test.tudou.library.model.CalendarDay;
+import com.test.tudou.library.util.DayUtils;
 
 /**
  * Created by tudou on 15-5-1.
  */
 public class WeekDayViewPager extends ViewPager implements WeekView.OnDayClickListener {
+
+  private final static int PAGE_SCROLL_DELAY = 24;
 
   public interface DayScrollListener {
     public void onDayPageScrolled(int position, float positionOffset,
@@ -94,4 +98,12 @@ public class WeekDayViewPager extends ViewPager implements WeekView.OnDayClickLi
     }
   }
 
+  public void setCurrentPosition(final int item) {
+    new Handler().postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        setCurrentItem(item);
+      }
+    }, PAGE_SCROLL_DELAY);
+  }
 }

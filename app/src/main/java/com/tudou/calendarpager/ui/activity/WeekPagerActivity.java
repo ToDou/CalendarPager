@@ -1,6 +1,7 @@
 package com.tudou.calendarpager.ui.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.TextView;
 import butterknife.ButterKnife;
@@ -58,6 +59,7 @@ public class WeekPagerActivity extends ActionBarActivity implements WeekDayViewP
     reachAbleDays.add(new CalendarDay(2015, 5, 20));
     mWeekViewAdapter.setData(reachAbleDays.get(0), reachAbleDays.get(reachAbleDays.size() - 1), null);
     mPagerAdapter.setData(reachAbleDays.get(0), reachAbleDays.get(reachAbleDays.size() - 1));
+    mViewPagerContent.setCurrentPosition(DayUtils.calculateDayPosition(mWeekViewAdapter.getFirstShowDay(), new CalendarDay(2015, 5, 6)));
   }
 
   @Override public void onDayPageScrolled(int position, float positionOffset,

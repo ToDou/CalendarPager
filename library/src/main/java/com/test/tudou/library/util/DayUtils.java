@@ -3,6 +3,7 @@ package com.test.tudou.library.util;
 import com.test.tudou.library.model.CalendarDay;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -55,6 +56,11 @@ public class DayUtils {
     calendar.setTimeInMillis(startDay.getTime());
     calendar.roll(Calendar.DAY_OF_YEAR, -day + 1);
     return new CalendarDay(calendar);
+  }
+
+  public static int calculateDayPosition(CalendarDay startDay, CalendarDay day) {
+    long x = day.getTime() - startDay.getTime();
+    return (int) x / (1000 * 60 * 60 * 24);
   }
 
   public static String formatEnglishTime(long times) {

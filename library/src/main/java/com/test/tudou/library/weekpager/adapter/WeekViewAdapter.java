@@ -59,6 +59,10 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekVi
     notifyDataSetChanged();
   }
 
+  public CalendarDay getFirstShowDay() {
+    return mFirstShowDay;
+  }
+
   @Override
   public int getItemCount() {
     if (mStartDay == null || mEndDay == null) {
@@ -67,8 +71,6 @@ public class WeekViewAdapter extends RecyclerView.Adapter<WeekViewAdapter.WeekVi
     int weekCount = DayUtils.calculateWeekCount(mStartDay, mEndDay);
     return weekCount;
   }
-
-
 
   @Override
   public WeekViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
