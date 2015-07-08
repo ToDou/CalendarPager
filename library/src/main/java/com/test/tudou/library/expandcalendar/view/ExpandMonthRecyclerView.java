@@ -96,14 +96,12 @@ public class ExpandMonthRecyclerView extends RecyclerView {
       calendar.setTimeInMillis(calendarDay.getTime());
       int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
       if (selectDay.getDayString().equals(calendarDay.getDayString())) {
-        selectDayRowNum = rowNum;
-        y = rowHeight  * (rowNum - 1) + rowHeight - (rowHeight - fontHeight) / 2;
+        y = rowHeight  * rowNum + rowHeight - (rowHeight - fontHeight) / 2;
       }
       if (weekDay == 7) rowNum++;
     }
 
-    int height = DisplayUtil.px2dip(getContext(), y);
-    mManager.scrollToPositionWithOffset(position, -height);
+    mManager.scrollToPositionWithOffset(position, -(int)y);
   }
 
   private ArrayList<CalendarDay> createDays(int monthPosition, CalendarDay firstDay) {
