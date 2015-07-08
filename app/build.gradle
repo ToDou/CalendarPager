@@ -8,8 +8,8 @@ android {
     applicationId "com.tudou.calendarpager"
     minSdkVersion 15
     targetSdkVersion 22
-    versionCode 1
-    versionName "1.0"
+    versionCode 10001
+    versionName "1.0.0"
   }
   buildTypes {
     release {

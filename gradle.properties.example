@@ -1,0 +1,4 @@
+storeFile=../keystore/calendarpager4android.keystore
+storePassword=calendarpager4release
+keyAlias=calendarpager4android-release
+keyPassword=calendarpager4release
