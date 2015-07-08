@@ -16,6 +16,10 @@ Screeshot
 
 ![](/screenshot_switch.gif)
 
+* ExpandCalendarView
+
+
+
 Installation
 ====
 ```groovy
@@ -136,6 +140,41 @@ Finally, your activity can Implements MonthView.OnDayClickListener to get the cl
 ```java
     @Override public void onDayClick(CalendarDay calendarDay) {
         Toast.makeText(this, calendarDay.getDayString(), Toast.LENGTH_SHORT).show();
+    }
+    
+```
+
+###ExpandCalendarView
+You can add it
+```xml
+   <com.test.tudou.library.expandcalendar.view.ExpandCalendarView
+        android:id="@+id/view_calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    
+```
+Then to add data to the Calendar
+```java
+   private void updateData() {
+        mMonthPagerView.setData(new CalendarDay(2015, 5, 4), new CalendarDay(2020, 12, 2));
+        mMonthPagerView.setOnDayClickListener(this);
+        mMonthPagerView.setSelectDay(new CalendarDay(2016, 10, 16));
+
+    }
+
+    @Override
+    public void onDayClick(CalendarDay calendarDay) {
+        textExample.setText("Click at " + calendarDay.getDayString());
+    }
+    
+```
+Finally, get the click data as this
+```java
+public class ExpandCalendarActivity extends ActionBarActivity implements ExpandCalendarMonthView.OnDayClickListener {
+    ...
+    @Override
+    public void onDayClick(CalendarDay calendarDay) {
+        textExample.setText("Click at " + calendarDay.getDayString());
     }
     
 ```
