@@ -10,15 +10,15 @@ Screeshot
 
 * WeekRecyclerView
 
-![](/screenshot.gif)
+![](/screenshot/screenshot.gif)
 
 * MonthSwitchView
 
-![](/screenshot_switch.gif)
+![](/screenshot/screenshot_switch.gif)
 
 * ExpandCalendarView
 
-
+![](/screenshot/screenshot_expand.gif)
 
 Installation
 ====
