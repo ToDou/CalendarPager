@@ -122,7 +122,7 @@ public class ExpandCalendarView extends LinearLayout implements ExpandCalendarMo
   }
 
   public void setSelectDay(CalendarDay calendarDay) {
-    mRecyclerView.scrollToPosition(DayUtils.calculateMonthPosition(mMonthAdapter.getStartDay(), calendarDay));
+    mRecyclerView.scrollToSelectRow(mMonthAdapter.getStartDay(), calendarDay);
     mMonthAdapter.setSelectDay(calendarDay);
   }
 

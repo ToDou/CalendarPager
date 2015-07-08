@@ -78,11 +78,8 @@ public class ExpandMonthRecyclerView extends RecyclerView {
 
   public void scrollToSelectRow(CalendarDay firstDay, CalendarDay selectDay) {
     int position = DayUtils.calculateMonthPosition(firstDay, selectDay);
-    //scrollToPosition(position);
     int rowNum = 0;
-    int selectDayRowNum = 0;
     ArrayList<CalendarDay> mDays = createDays(position, firstDay);
-    //int height = rowNum *
     int rowHeight = getResources().getDimensionPixelSize(R.dimen.default_month_row_height);
     Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     paint.setTextSize(getResources().getDimension(R.dimen.si_default_text_size));

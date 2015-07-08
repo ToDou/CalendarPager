@@ -33,6 +33,7 @@ public class ExpandCalendarMonthView extends View {
   private Paint mPaintNormal;
   private Paint mPaintSelect;
   private int mCircleColor;
+  private int mTextNormalHintColor;
   private int mTextNormalColor;
   private int mTextSelectColor;
   protected int mRowHeight = DEFAULT_HEIGHT;
@@ -59,6 +60,7 @@ public class ExpandCalendarMonthView extends View {
 
   private void initPaint() {
     mTextNormalColor = getResources().getColor(R.color.text_color_normal);
+    mTextNormalHintColor = getResources().getColor(R.color.text_color_normal_hint);
     mTextSelectColor = getResources().getColor(android.R.color.white);
     mCircleColor = getResources().getColor(R.color.color_18ffff);
 
@@ -142,31 +144,72 @@ public class ExpandCalendarMonthView extends View {
       CalendarDay calendarDay = mDays.get(i);
       Calendar calendar = Calendar.getInstance();
       calendar.setTimeInMillis(calendarDay.getTime());
-      int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
-      String content = String.valueOf(calendarDay.day);
-      Paint.FontMetrics fontMetrics = mPaintNormal.getFontMetrics();
-      float fontHeight = fontMetrics.bottom - fontMetrics.top;
-      float textWidth = mPaintNormal.measureText(content);
-      float parentWidth = getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
-      float y = mRowHeight  * rowNum + mRowHeight - (mRowHeight - fontHeight) / 2 - fontMetrics.bottom;
-      float x = getResources().getDimension(R.dimen.activity_horizontal_margin)
-          + parentWidth / DAY_IN_WEEK * (weekDay - 1)
-          + parentWidth / DAY_IN_WEEK / 2 - textWidth / 2;
-
-      if (mSelectDay.getDayString().equals(calendarDay.getDayString())) {
-        mSelectDayRowNum = rowNum;
-        canvas.drawCircle(getResources().getDimension(R.dimen.activity_horizontal_margin)
-                + parentWidth / DAY_IN_WEEK * (weekDay - 1)
-                + parentWidth / DAY_IN_WEEK / 2, mRowHeight  * rowNum + mRowHeight / 2, mRowHeight * 2 / 4, mPaintSelect
-        );
-        mPaintNormal.setColor(mTextSelectColor);
-        canvas.drawText(content, x, y, mPaintNormal);
-      } else {
-        mPaintNormal.setColor(mTextNormalColor);
-        canvas.drawText(content, x, y, mPaintNormal);
+      if (i == 0) {
+        drawStartHintDays(canvas, calendar);
       }
+      drawMonthText(canvas, calendar, false);
+      if (i == mDays.size() - 1) {
+        drawEndHintDays(canvas, calendar);
+      }
+    }
+  }
 
-      if (weekDay == 7) rowNum++;
+  private void drawMonthText(Canvas canvas, Calendar calendar, boolean isHintText) {
+    int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+    CalendarDay calendarDay = new CalendarDay(calendar.getTimeInMillis());
+    String content = String.valueOf(calendarDay.day);
+    Paint.FontMetrics fontMetrics = mPaintNormal.getFontMetrics();
+    float fontHeight = fontMetrics.bottom - fontMetrics.top;
+    float textWidth = mPaintNormal.measureText(content);
+    float parentWidth = getWidth() - 2 * getResources().getDimension(R.dimen.activity_horizontal_margin);
+    float y = mRowHeight  * rowNum + mRowHeight - (mRowHeight - fontHeight) / 2 - fontMetrics.bottom;
+    float x = getResources().getDimension(R.dimen.activity_horizontal_margin)
+            + parentWidth / DAY_IN_WEEK * (weekDay - 1)
+            + parentWidth / DAY_IN_WEEK / 2 - textWidth / 2;
+
+    if (isHintText) {
+      mPaintNormal.setColor(mTextNormalHintColor);
+      canvas.drawText(content, x, y, mPaintNormal);
+      return;
+    }
+
+    if (mSelectDay.getDayString().equals(calendarDay.getDayString())) {
+      mSelectDayRowNum = rowNum;
+      canvas.drawCircle(getResources().getDimension(R.dimen.activity_horizontal_margin)
+                      + parentWidth / DAY_IN_WEEK * (weekDay - 1)
+                      + parentWidth / DAY_IN_WEEK / 2, mRowHeight  * rowNum + mRowHeight / 2, mRowHeight * 2 / 4, mPaintSelect
+      );
+      mPaintNormal.setColor(mTextSelectColor);
+      canvas.drawText(content, x, y, mPaintNormal);
+    }  else {
+      mPaintNormal.setColor(mTextNormalColor);
+      canvas.drawText(content, x, y, mPaintNormal);
+    }
+
+    if (weekDay == 7 && !(new CalendarDay(calendar.getTimeInMillis()).getDayString().equals(mDays.get(mDays.size() - 1)))) rowNum++;
+  }
+
+  private void drawStartHintDays(Canvas canvas, Calendar calendar) {
+    Calendar calendarNew = Calendar.getInstance();
+    calendarNew.setTimeInMillis(calendar.getTimeInMillis());
+    calendarNew.add(Calendar.DAY_OF_MONTH, -1);
+    int weekDay = calendarNew.get(Calendar.DAY_OF_WEEK);
+    if (weekDay == 7) return;
+    for (int i = weekDay; i > 1 || i == 1; i--) {
+      drawMonthText(canvas, calendarNew, true);
+      calendarNew.add(Calendar.DAY_OF_MONTH, -1);
+    }
+  }
+
+  private void drawEndHintDays(Canvas canvas, Calendar calendar) {
+    Calendar calendarNew = Calendar.getInstance();
+    calendarNew.setTimeInMillis(calendar.getTimeInMillis());
+    calendarNew.add(Calendar.DAY_OF_MONTH, 1);
+    int weekDay = calendarNew.get(Calendar.DAY_OF_WEEK);
+    if (weekDay == 1) return;
+    for (int i = weekDay; i < DAY_IN_WEEK || i == DAY_IN_WEEK; i++) {
+      drawMonthText(canvas, calendarNew, true);
+      calendarNew.add(Calendar.DAY_OF_MONTH, 1);
     }
   }
 
