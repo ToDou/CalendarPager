@@ -1,16 +1,32 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginTop="64dp"
-        android:background="#eeeeee"
         android:gravity="center"
-        android:text="You can add content just like fragment at here" />
+        android:background="#eeeeee"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You can add content just like fragment at here" />
+
+        <TextView
+            android:id="@+id/text_example"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:textSize="@dimen/abc_text_size_large_material"
+            tools:text="2014-11-14" />
+    </LinearLayout>
 
     <com.test.tudou.library.expandcalendar.view.ExpandCalendarView
         android:id="@+id/view_calendar"
